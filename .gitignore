@@ -1,0 +1,14 @@
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# CUE local module cache (per-checkout, never committed)
+cue.mod/pkg/
+cue.mod/usr/
+cue.mod/gen/
