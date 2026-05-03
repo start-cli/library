@@ -208,23 +208,34 @@ Defines the schema for task workflows. Embeds `#UTD` for content generation.
 
 ```bash
 cd schemas
-cue vet utd.cue task.cue task_example.cue
-cue vet utd.cue role.cue role_example.cue
-cue vet utd.cue context.cue context_example.cue
-cue vet agent.cue agent_example.cue
-cue vet index.cue index_example.cue
-cue vet utd.cue utd_example.cue
+cue vet ./...
+```
+
+### Validate Examples
+
+The example files in `docs/examples/` are illustrative only. They live outside the schemas module so they do not pollute the published package, which means they are not part of `cue vet ./...`. To vet an example against the schemas, pass the full schema package alongside the example file:
+
+```bash
+cd schemas
+cue vet *.cue ../docs/examples/task_example.cue
+cue vet *.cue ../docs/examples/role_example.cue
+cue vet *.cue ../docs/examples/context_example.cue
+cue vet *.cue ../docs/examples/agent_example.cue
+cue vet *.cue ../docs/examples/index_example.cue
+cue vet *.cue ../docs/examples/utd_example.cue
+cue vet *.cue ../docs/examples/settings_example.cue
 ```
 
 ### Export Examples
 
 ```bash
-cue export task.cue task_example.cue utd.cue
-cue export role.cue role_example.cue utd.cue
-cue export context.cue context_example.cue utd.cue
-cue export agent.cue agent_example.cue
-cue export index.cue index_example.cue
-cue export utd.cue utd_example.cue
+cue export *.cue ../docs/examples/task_example.cue
+cue export *.cue ../docs/examples/role_example.cue
+cue export *.cue ../docs/examples/context_example.cue
+cue export *.cue ../docs/examples/agent_example.cue
+cue export *.cue ../docs/examples/index_example.cue
+cue export *.cue ../docs/examples/utd_example.cue
+cue export *.cue ../docs/examples/settings_example.cue
 ```
 
 ### Using #UTD Directly
