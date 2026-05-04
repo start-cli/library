@@ -6,8 +6,8 @@ import (
 )
 
 task: schemas.#Task & {
-	description: "Create a new role in the start-cli/library repository"
-	tags: ["start-cli/library", "role", "create", "cue", "interactive"]
+	description: "Create a new role in the library repository"
+	tags: ["library", "role", "create", "cue", "interactive"]
 	role: assistantRole.role
 	file: "@module/task.md"
 	prompt: """

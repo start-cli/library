@@ -1,11 +1,11 @@
 # Update Role
 
-Update an existing role in the start-cli/library repository. This is primarily a design and discussion process — understanding what the role is doing wrong or not doing, and agreeing on the changes before implementing them.
+Update an existing role in the library repository. This is primarily a design and discussion process — understanding what the role is doing wrong or not doing, and agreeing on the changes before implementing them.
 
 ## Prerequisites
 
 - The role path (e.g., `golang/assistant`, `gitlab/pipeline/agent`)
-- Write access to the start-cli/library repository
+- Write access to the library repository
 - CUE CLI installed (`cue version`)
 
 ## Process

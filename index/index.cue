@@ -145,20 +145,20 @@ roles: {
 	"start/library/agent": {
 		module:      "github.com/start-cli/library/roles/start/library/agent@v1"
 		version:     "v1.0.0"
-		description: "start-cli/library expert - autonomous agent mode"
-		tags: ["start-cli/library", "cue", "agent", "autonomous"]
+		description: "library expert - autonomous agent mode"
+		tags: ["library", "cue", "agent", "autonomous"]
 	}
 	"start/library/assistant": {
 		module:      "github.com/start-cli/library/roles/start/library/assistant@v1"
 		version:     "v1.0.0"
-		description: "start-cli/library expert - collaborative assistant mode"
-		tags: ["start-cli/library", "cue", "assistant", "collaborative"]
+		description: "library expert - collaborative assistant mode"
+		tags: ["library", "cue", "assistant", "collaborative"]
 	}
 	"start/library/teacher": {
 		module:      "github.com/start-cli/library/roles/start/library/teacher@v1"
 		version:     "v1.0.0"
-		description: "start-cli/library expert - educational teacher mode"
-		tags: ["start-cli/library", "cue", "teacher", "educational"]
+		description: "library expert - educational teacher mode"
+		tags: ["library", "cue", "teacher", "educational"]
 	}
 	"home/dotai/default": {
 		module:      "github.com/start-cli/library/roles/home/dotai/default@v1"
@@ -493,50 +493,50 @@ tasks: {
 	"start/module/task/create": {
 		module:      "github.com/start-cli/library/tasks/start/module/task/create@v1"
 		version:     "v1.0.0"
-		description: "Create a new task in the start-cli/library repository"
-		tags: ["start-cli/library", "task", "create", "cue", "interactive"]
+		description: "Create a new task in the library repository"
+		tags: ["library", "task", "create", "cue", "interactive"]
 	}
 	"start/module/task/update": {
 		module:      "github.com/start-cli/library/tasks/start/module/task/update@v1"
 		version:     "v1.0.0"
-		description: "Update an existing task in the start-cli/library repository"
-		tags: ["start-cli/library", "task", "update", "cue", "interactive"]
+		description: "Update an existing task in the library repository"
+		tags: ["library", "task", "update", "cue", "interactive"]
 	}
 	"start/module/role/create": {
 		module:      "github.com/start-cli/library/tasks/start/module/role/create@v1"
 		version:     "v1.0.0"
-		description: "Create a new role in the start-cli/library repository"
-		tags: ["start-cli/library", "role", "create", "cue", "interactive"]
+		description: "Create a new role in the library repository"
+		tags: ["library", "role", "create", "cue", "interactive"]
 	}
 	"start/module/role/update": {
 		module:      "github.com/start-cli/library/tasks/start/module/role/update@v1"
 		version:     "v1.0.0"
-		description: "Update an existing role in the start-cli/library repository"
-		tags: ["start-cli/library", "role", "update", "cue", "interactive"]
+		description: "Update an existing role in the library repository"
+		tags: ["library", "role", "update", "cue", "interactive"]
 	}
 	"start/module/agent/create": {
 		module:      "github.com/start-cli/library/tasks/start/module/agent/create@v1"
 		version:     "v1.0.0"
-		description: "Create a new agent definition in the start-cli/library repository"
-		tags: ["start-cli/library", "agent", "create", "cue", "interactive"]
+		description: "Create a new agent definition in the library repository"
+		tags: ["library", "agent", "create", "cue", "interactive"]
 	}
 	"start/module/agent/update": {
 		module:      "github.com/start-cli/library/tasks/start/module/agent/update@v1"
 		version:     "v1.0.0"
-		description: "Update an existing agent definition in the start-cli/library repository"
-		tags: ["start-cli/library", "agent", "update", "cue", "interactive"]
+		description: "Update an existing agent definition in the library repository"
+		tags: ["library", "agent", "update", "cue", "interactive"]
 	}
 	"start/module/context/create": {
 		module:      "github.com/start-cli/library/tasks/start/module/context/create@v1"
 		version:     "v1.0.0"
-		description: "Create a new context definition in the start-cli/library repository"
-		tags: ["start-cli/library", "context", "create", "cue", "interactive"]
+		description: "Create a new context definition in the library repository"
+		tags: ["library", "context", "create", "cue", "interactive"]
 	}
 	"start/module/context/update": {
 		module:      "github.com/start-cli/library/tasks/start/module/context/update@v1"
 		version:     "v1.0.0"
-		description: "Update an existing context definition in the start-cli/library repository"
-		tags: ["start-cli/library", "context", "update", "cue", "interactive"]
+		description: "Update an existing context definition in the library repository"
+		tags: ["library", "context", "update", "cue", "interactive"]
 	}
 	"cwd/readme/create": {
 		module:      "github.com/start-cli/library/tasks/cwd/readme/create@v1"

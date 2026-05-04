@@ -6,8 +6,8 @@ import (
 )
 
 task: schemas.#Task & {
-	description: "Create a new context definition in the start-cli/library repository"
-	tags: ["start-cli/library", "context", "create", "cue", "interactive"]
+	description: "Create a new context definition in the library repository"
+	tags: ["library", "context", "create", "cue", "interactive"]
 	role: assistantRole.role
 	file: "@module/task.md"
 	prompt: """

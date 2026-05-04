@@ -1,6 +1,6 @@
 # Create Role
 
-Create a new role in the start-cli/library repository. This is an interactive process that produces all three modes (agent, assistant, teacher) for a given domain.
+Create a new role in the library repository. This is an interactive process that produces all three modes (agent, assistant, teacher) for a given domain.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ Confirm these values with the user before starting:
 
 Requirements:
 
-- Write access to the start-cli/library repository
+- Write access to the library repository
 - CUE CLI installed (`cue version`)
 - Understanding of the domain the role covers
 

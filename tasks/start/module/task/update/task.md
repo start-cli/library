@@ -1,11 +1,11 @@
 # Update Task
 
-Update an existing task in the start-cli/library repository. This is primarily a design and discussion process — understanding what the task is doing wrong or not doing, and agreeing on the changes before implementing them.
+Update an existing task in the library repository. This is primarily a design and discussion process — understanding what the task is doing wrong or not doing, and agreeing on the changes before implementing them.
 
 ## Prerequisites
 
 - The task path under tasks/ (e.g., `jira/item/comment/git-commit`)
-- Write access to the start-cli/library repository
+- Write access to the library repository
 - CUE CLI installed (`cue version`)
 
 ## Process

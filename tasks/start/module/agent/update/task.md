@@ -1,11 +1,11 @@
 # Update Agent
 
-Update an existing agent definition in the start-cli/library repository. This is primarily a design and discussion process — understanding what the agent definition is doing wrong or not doing, and agreeing on the changes before implementing them.
+Update an existing agent definition in the library repository. This is primarily a design and discussion process — understanding what the agent definition is doing wrong or not doing, and agreeing on the changes before implementing them.
 
 ## Prerequisites
 
 - The agent path (e.g., `claude/interactive`, `gemini/non-interactive`)
-- Write access to the start-cli/library repository
+- Write access to the library repository
 - CUE CLI installed (`cue version`)
 
 ## Process

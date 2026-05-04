@@ -3,8 +3,8 @@ package update
 import "github.com/start-cli/library/schemas@v1"
 
 task: schemas.#Task & {
-	description: "Update an existing task in the start-cli/library repository"
-	tags: ["start-cli/library", "task", "update", "cue", "interactive"]
+	description: "Update an existing task in the library repository"
+	tags: ["library", "task", "update", "cue", "interactive"]
 	file: "@module/task.md"
 	prompt: """
 		Read {{.file}} to understand your task.

@@ -1,6 +1,6 @@
 # Create Context
 
-Create a new context definition in the start-cli/library repository. This is an interactive process.
+Create a new context definition in the library repository. This is an interactive process.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ Confirm these values with the user before starting:
 
 Requirements:
 
-- Write access to the start-cli/library repository
+- Write access to the library repository
 - CUE CLI installed (`cue version`)
 - Understanding of the context's purpose and content source
 

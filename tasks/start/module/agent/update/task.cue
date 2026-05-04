@@ -3,8 +3,8 @@ package update
 import "github.com/start-cli/library/schemas@v1"
 
 task: schemas.#Task & {
-	description: "Update an existing agent definition in the start-cli/library repository"
-	tags: ["start-cli/library", "agent", "update", "cue", "interactive"]
+	description: "Update an existing agent definition in the library repository"
+	tags: ["library", "agent", "update", "cue", "interactive"]
 	file: "@module/task.md"
 	prompt: """
 		Read {{.file}} to understand your task.
