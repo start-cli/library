@@ -1,4 +1,4 @@
-module: "github.com/start-cli/library/index@v0"
+module: "github.com/start-cli/library/index@v1"
 language: {
 	version: "v0.16.0"
 }

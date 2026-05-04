@@ -1,4 +1,4 @@
-module: "github.com/start-cli/library/agents/claude/interactive@v0"
+module: "github.com/start-cli/library/agents/claude/interactive@v1"
 language: {
 	version: "v0.16.0"
 }

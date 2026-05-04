@@ -7,8 +7,8 @@ agents: [string]: schemas.#IndexEntry
 
 agents: {
 	"claude/interactive": {
-		module:      "github.com/start-cli/library/agents/claude/interactive@v0"
-		version:     "v0.1.0"
+		module:      "github.com/start-cli/library/agents/claude/interactive@v1"
+		version:     "v1.0.0"
 		description: "Claude Code by Anthropic - agentic coding assistant"
 		bin:         "claude"
 		tags: ["anthropic", "claude", "coding", "agent"]
@@ -20,8 +20,8 @@ roles: [string]: schemas.#IndexEntry
 
 roles: {
 	"golang/assistant": {
-		module:      "github.com/start-cli/library/roles/golang/assistant@v0"
-		version:     "v0.1.0"
+		module:      "github.com/start-cli/library/roles/golang/assistant@v1"
+		version:     "v1.0.0"
 		description: "Go programming language expert - collaborative assistant mode"
 		tags: ["golang", "programming", "assistant", "collaborative"]
 	}
@@ -32,14 +32,14 @@ contexts: [string]: schemas.#IndexEntry
 
 contexts: {
 	"cwd/agents-md": {
-		module:      "github.com/start-cli/library/contexts/cwd/agents-md@v0"
-		version:     "v0.1.0"
+		module:      "github.com/start-cli/library/contexts/cwd/agents-md@v1"
+		version:     "v1.0.0"
 		description: "Repository-specific AI agent guidelines from AGENTS.md"
 		tags: ["agents", "repository", "guidelines", "cwd"]
 	}
 	"cwd/dotai/workspace": {
-		module:      "github.com/start-cli/library/contexts/cwd/dotai/workspace@v0"
-		version:     "v0.1.0"
+		module:      "github.com/start-cli/library/contexts/cwd/dotai/workspace@v1"
+		version:     "v1.0.0"
 		description: "Workspace context from .ai/workspace.md"
 		tags: ["dotai", "cwd", "workspace"]
 	}
@@ -50,8 +50,8 @@ tasks: [string]: schemas.#IndexEntry
 
 tasks: {
 	"review/git-diff": {
-		module:      "github.com/start-cli/library/tasks/review/git-diff@v0"
-		version:     "v0.1.0"
+		module:      "github.com/start-cli/library/tasks/review/git-diff@v1"
+		version:     "v1.0.0"
 		description: "Comprehensive review of code changes from git diff to catch regressions and bugs"
 		tags: ["review", "diff", "regression", "code-changes", "code-quality"]
 	}

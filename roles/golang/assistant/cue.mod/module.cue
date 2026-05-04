@@ -1,4 +1,4 @@
-module: "github.com/start-cli/library/roles/golang/assistant@v0"
+module: "github.com/start-cli/library/roles/golang/assistant@v1"
 language: {
 	version: "v0.16.0"
 }

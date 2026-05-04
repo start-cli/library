@@ -1,4 +1,4 @@
-module: "github.com/start-cli/library/tasks/review/git-diff@v0"
+module: "github.com/start-cli/library/tasks/review/git-diff@v1"
 language: {
 	version: "v0.16.0"
 }
