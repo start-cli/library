@@ -1,0 +1,19 @@
+package update
+
+import "github.com/start-cli/library/schemas@v1"
+
+task: schemas.#Task & {
+	description: "Update an existing context definition in the start-cli/library repository"
+	tags: ["start-cli/library", "context", "update", "cue", "interactive"]
+	file: "@module/task.md"
+	prompt: """
+		Read {{.file}} to understand your task.
+		{{if .instructions}}
+
+		Context path: {{.instructions}}
+		{{else}}
+
+		No context path was supplied. Ask the user which context they want to update.
+		{{end}}
+		"""
+}
