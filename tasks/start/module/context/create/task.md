@@ -223,7 +223,7 @@ Notes:
 Create the module definition:
 
 ```cue
-module: "github.com/start-cli/library/contexts/<domain>/[specialisation/]<noun>@v0"
+module: "github.com/start-cli/library/contexts/<domain>/[specialisation/]<noun>@v1"
 language: {
 	version: "v0.16.0"
 }
@@ -271,8 +271,8 @@ Add an entry to `index/index.cue`:
 
 ```cue
 "<domain>/[specialisation/]<noun>": {
-    module:      "github.com/start-cli/library/contexts/<domain>/[specialisation/]<noun>@v0"
-    version:     "v0.1.0"
+    module:      "github.com/start-cli/library/contexts/<domain>/[specialisation/]<noun>@v1"
+    version:     "v1.0.0"
     description: "<description>"
     tags: ["<domain>", "<tag1>", "<tag2>"]
 }
@@ -284,7 +284,7 @@ Then commit, tag, and publish:
 DOMAIN="<domain>"
 SPEC=""  # or "<specialisation>/"
 NOUN="<noun>"
-VERSION="v0.1.0"
+VERSION="v1.0.0"
 
 # Check latest remote index tag
 git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1

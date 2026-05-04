@@ -269,7 +269,7 @@ They differ in:
 Create a module definition for each mode:
 
 ```cue
-module: "github.com/start-cli/library/roles/<domain>/[specialisation/]<mode>@v0"
+module: "github.com/start-cli/library/roles/<domain>/[specialisation/]<mode>@v1"
 language: {
 	version: "v0.16.0"
 }
@@ -318,20 +318,20 @@ Add three entries to `index/index.cue`:
 
 ```cue
 "<domain>/[specialisation/]agent": {
-    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]agent@v0"
-    version:     "v0.1.0"
+    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]agent@v1"
+    version:     "v1.0.0"
     description: "<description-base> - autonomous agent mode"
     tags: ["<domain>", "<topic-tags>", "agent", "autonomous"]
 }
 "<domain>/[specialisation/]assistant": {
-    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]assistant@v0"
-    version:     "v0.1.0"
+    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]assistant@v1"
+    version:     "v1.0.0"
     description: "<description-base> - collaborative assistant mode"
     tags: ["<domain>", "<topic-tags>", "assistant", "collaborative"]
 }
 "<domain>/[specialisation/]teacher": {
-    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]teacher@v0"
-    version:     "v0.1.0"
+    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]teacher@v1"
+    version:     "v1.0.0"
     description: "<description-base> - instructional teacher mode"
     tags: ["<domain>", "<topic-tags>", "teacher", "instructional", "learning"]
 }
@@ -342,7 +342,7 @@ Then commit, tag, and publish:
 ```bash
 DOMAIN="<domain>"
 SPEC=""  # or "<specialisation>/"
-VERSION="v0.1.0"
+VERSION="v1.0.0"
 
 # Check latest remote index tag
 git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1

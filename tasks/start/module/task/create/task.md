@@ -104,7 +104,7 @@ package <packagename>
 
 import (
 	"github.com/start-cli/library/schemas@v1"
-	assistantRole "github.com/start-cli/library/roles/<category>/<type>@v0:<type>"
+	assistantRole "github.com/start-cli/library/roles/<category>/<type>@v1:<type>"
 )
 
 task: schemas.#Task & {
@@ -215,7 +215,7 @@ Create the module definition with dependencies.
 If using a role:
 
 ```cue
-module: "github.com/start-cli/library/tasks/<category>/<task-name>@v0"
+module: "github.com/start-cli/library/tasks/<category>/<task-name>@v1"
 language: {
 	version: "v0.16.0"
 }
@@ -223,7 +223,7 @@ source: {
 	kind: "git"
 }
 deps: {
-	"github.com/start-cli/library/roles/<role-category>/<role-type>@v0": {
+	"github.com/start-cli/library/roles/<role-category>/<role-type>@v1": {
 		v: "v1.0.0"
 	}
 	"github.com/start-cli/library/schemas@v1": {
@@ -235,7 +235,7 @@ deps: {
 If no role:
 
 ```cue
-module: "github.com/start-cli/library/tasks/<category>/<task-name>@v0"
+module: "github.com/start-cli/library/tasks/<category>/<task-name>@v1"
 language: {
 	version: "v0.16.0"
 }
@@ -288,8 +288,8 @@ After validation passes, update the index and publish everything in one commit:
 git tag -l "tasks/<category>/<task-name>/*"
 git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1
 
-# For new tasks, start with v0.1.0
-VERSION="v0.1.0"
+# For new tasks, start with v1.0.0
+VERSION="v1.0.0"
 INDEX_VERSION="<next index version>"
 
 # Stage task files and index together, commit as one change
@@ -322,7 +322,7 @@ Verify publication:
 
 ```bash
 # The module should now be available at:
-# github.com/start-cli/library/tasks/<category>/<task-name>@v0
+# github.com/start-cli/library/tasks/<category>/<task-name>@v1
 ```
 
 ## Step 9: Close Related GitHub Issue
@@ -330,7 +330,7 @@ Verify publication:
 If a GitHub issue exists for this task, close it now:
 
 ```bash
-gh issue close <issue-number> --repo start-cli/library --comment "Implemented as tasks/<path>/<task-name>@v0.1.0"
+gh issue close <issue-number> --repo start-cli/library --comment "Implemented as tasks/<path>/<task-name>@v1.0.0"
 ```
 
 ## Quick Reference
@@ -340,7 +340,7 @@ gh issue close <issue-number> --repo start-cli/library --comment "Implemented as
 CATEGORY="<category>"
 TASK_NAME="<task-name>"
 PACKAGE_NAME="<packagename>"
-VERSION="v0.1.0"
+VERSION="v1.0.0"
 
 # 1. Create structure
 mkdir -p tasks/${CATEGORY}/${TASK_NAME}/cue.mod

@@ -179,7 +179,7 @@ Notes:
 Create the module definition:
 
 ```cue
-module: "github.com/start-cli/library/agents/<tool>/<variant>@v0"
+module: "github.com/start-cli/library/agents/<tool>/<variant>@v1"
 language: {
 	version: "v0.16.0"
 }
@@ -227,8 +227,8 @@ Add an entry to `index/index.cue`. Agent index entries include a `bin` field:
 
 ```cue
 "<tool>/<variant>": {
-    module:      "github.com/start-cli/library/agents/<tool>/<variant>@v0"
-    version:     "v0.1.0"
+    module:      "github.com/start-cli/library/agents/<tool>/<variant>@v1"
+    version:     "v1.0.0"
     description: "<description>"
     bin:         "<binary-name>"
     tags: ["<tool>", "<tag1>", "<tag2>"]
@@ -240,7 +240,7 @@ Then commit, tag, and publish:
 ```bash
 TOOL="<tool>"
 VARIANT="<variant>"
-VERSION="v0.1.0"
+VERSION="v1.0.0"
 
 # Check latest remote index tag
 git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1
