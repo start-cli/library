@@ -1,0 +1,16 @@
+package edit
+
+import "github.com/start-cli/library/schemas@v1"
+
+agent: schemas.#Agent & {
+	bin:         "gemini"
+	command:     "GEMINI_SYSTEM_MD={{.role_file}} {{.bin}} --model {{.model}} --approval-mode auto_edit --prompt-interactive {{.prompt}}"
+	description: "Gemini CLI with auto-accepted file edits - for trusted editing sessions"
+	default_model: "pro"
+	models: {
+		flash: "gemini-3-flash-preview"
+		lite:  "gemini-3.1-flash-lite-preview"
+		pro:   "gemini-3.1-pro-preview"
+	}
+	tags: ["google", "gemini", "coding", "agent", "trusted", "auto-edit"]
+}
