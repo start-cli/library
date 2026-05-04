@@ -7,17 +7,41 @@ Each subdirectory contains a CUE package defining an agent with its command temp
 ## Structure
 
 ```
-agents/<name>/
+agents/<vendor>/<mode>/
 ├── agent.cue
 └── cue.mod/module.cue
 ```
 
 ## Available Agents
 
-- [claude/](claude/) - Claude Code by Anthropic
-- [gemini/](gemini/) - Gemini CLI by Google
-- [aichat/](aichat/) - AIChat multi-provider CLI
+### claude/ (Anthropic Claude Code)
+
+- [claude/interactive](claude/interactive/) - Interactive Claude Code session
+- [claude/non-interactive](claude/non-interactive/) - Non-interactive mode; completes the task and exits
+- [claude/edit](claude/edit/) - Auto-accepted file edits for trusted editing sessions
+- [claude/bypass-permissions](claude/bypass-permissions/) - All permissions bypassed for automated tasks
+- [claude/unattended](claude/unattended/) - Non-interactive with all permissions bypassed
+
+### copilot/ (GitHub Copilot CLI)
+
+- [copilot/interactive](copilot/interactive/) - Interactive Copilot session
+- [copilot/non-interactive](copilot/non-interactive/) - Non-interactive mode
+- [copilot/edit](copilot/edit/) - Auto-accepted file edits
+- [copilot/bypass-permissions](copilot/bypass-permissions/) - All permissions bypassed
+- [copilot/unattended](copilot/unattended/) - Non-interactive with all permissions bypassed
+
+### gemini/ (Google Gemini CLI)
+
+- [gemini/interactive](gemini/interactive/) - Interactive Gemini session
+- [gemini/non-interactive](gemini/non-interactive/) - Non-interactive mode
+- [gemini/edit](gemini/edit/) - Auto-accepted file edits
+- [gemini/bypass-permissions](gemini/bypass-permissions/) - All permissions bypassed
+- [gemini/unattended](gemini/unattended/) - Non-interactive with all permissions bypassed
+
+### aichat/ (multi-provider CLI)
+
+- [aichat/interactive](aichat/interactive/) - Interactive AIChat session
 
 ## Documentation
 
-See [docs/](docs/) for CLI reference documentation.
+See [docs/](../docs/) for CLI reference documentation.
