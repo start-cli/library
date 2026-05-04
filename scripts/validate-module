@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+# Environment setup
+# -----------------------------------------------------------------------------
+set -o pipefail
+[[ ${DEBUG-} ]] && set -o xtrace
+SCRIPT_DIR="$(cd "${BASH_SOURCE[0]%/*}" || exit 1; pwd)"
+[[ ":${PATH}:" != *:"${SCRIPT_DIR}":* ]] && export PATH="${SCRIPT_DIR}:${PATH}"
+source "${SCRIPT_DIR}/lib.sh"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." || exit 1; pwd)"
+
+function print_usage() {
+  cat <<EOF
+Usage: $(basename "$0") <module-dir>
+
+Validate a CUE module by running cue vet and cue export.
+The module-dir is relative to the repository root.
+
+Dependencies:
+  cue    The CUE CLI tool
+
+Required arguments:
+  module-dir    Path to the module directory (e.g., roles/git/agent)
+
+Optional arguments:
+  -h, --help    Show this help message and exit
+EOF
+}
+if [[ $# -ne 1 || "${1}" == "-h" || "${1}" == "--help" ]]; then
+  print_usage
+  exit 1
+fi
+
+function ctrlc_trap() {
+  log_newline
+  log_warning "Script interrupted. Exiting."
+  exit 130
+}
+trap ctrlc_trap SIGINT
+
+# Title and Dependency Checks
+# -----------------------------------------------------------------------------
+log_newline
+log_title "Validate Module"
+
+if ! command -v cue >/dev/null; then
+  log_error "Missing dependency - 'cue'"
+  exit 1
+fi
+
+# Report Operational Values
+# -----------------------------------------------------------------------------
+log_heading "Operational Values"
+
+declare module_dir="${1}"
+declare module_path="${REPO_ROOT}/${module_dir}"
+
+log_message "module-dir:  '${module_dir}'"
+log_message "module-path: '${module_path}'"
+
+# Validation Checks
+# -----------------------------------------------------------------------------
+log_heading "Validation Checks"
+
+if [[ ! -d "${module_path}" ]]; then
+  log_failure "Directory not found: '${module_path}'"
+  exit 1
+fi
+log_success "Directory exists"
+
+if [[ ! -f "${module_path}/cue.mod/module.cue" ]]; then
+  log_failure "Not a CUE module - missing cue.mod/module.cue"
+  exit 1
+fi
+log_success "CUE module found"
+
+declare cue_file=""
+for f in role task context agent index; do
+  if [[ -f "${module_path}/${f}.cue" ]]; then
+    cue_file="${f}.cue"
+    break
+  fi
+done
+
+if [[ -z "${cue_file}" ]]; then
+  log_failure "No recognised CUE file found (expected role.cue, task.cue, context.cue, agent.cue, or index.cue)"
+  exit 1
+fi
+log_success "CUE file detected: '${cue_file}'"
+
+# Main Logic
+# -----------------------------------------------------------------------------
+log_heading "cue vet"
+
+if (cd "${module_path}" && cue vet "${cue_file}"); then
+  log_success "cue vet passed"
+else
+  log_failure "cue vet failed"
+  exit 1
+fi
+
+log_heading "cue export"
+
+if (cd "${module_path}" && cue export "${cue_file}"); then
+  log_success "cue export passed"
+else
+  log_failure "cue export failed"
+  exit 1
+fi
+
+log_done

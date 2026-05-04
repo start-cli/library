@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+
+# Environment setup
+# -----------------------------------------------------------------------------
+set -o pipefail
+[[ ${DEBUG-} ]] && set -o xtrace
+SCRIPT_DIR="$(cd "${BASH_SOURCE[0]%/*}" || exit 1; pwd)"
+[[ ":${PATH}:" != *:"${SCRIPT_DIR}":* ]] && export PATH="${SCRIPT_DIR}:${PATH}"
+source "${SCRIPT_DIR}/lib.sh"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." || exit 1; pwd)"
+
+function print_usage() {
+  cat <<EOF
+Usage: $(basename "$0")
+
+Detect the next index patch version, create a git tag, publish the index
+module to the CUE registry, then push main and the index tag to origin.
+
+On first publish (no remote index/* tag), seeds v1.0.0. Subsequent runs
+read the latest remote index tag via git ls-remote and bump the patch.
+
+Assumes index/index.cue has already been committed before running.
+
+Dependencies:
+  cue    The CUE CLI tool
+  git    Git version control
+
+Optional arguments:
+  -h, --help    Show this help message and exit
+EOF
+}
+if [[ "${1}" == "-h" || "${1}" == "--help" ]]; then
+  print_usage
+  exit 0
+fi
+if [[ $# -gt 0 ]]; then
+  print_usage
+  exit 1
+fi
+
+function ctrlc_trap() {
+  log_newline
+  log_warning "Script interrupted. Exiting."
+  exit 130
+}
+trap ctrlc_trap SIGINT
+
+# Title and Dependency Checks
+# -----------------------------------------------------------------------------
+log_newline
+log_title "Publish Index"
+
+for cmd in cue git; do
+  if ! command -v "${cmd}" >/dev/null; then
+    log_error "Missing dependency - '${cmd}'"
+    exit 1
+  fi
+done
+
+# Validation Checks
+# -----------------------------------------------------------------------------
+log_heading "Validation Checks"
+
+if git -C "${REPO_ROOT}" status --porcelain -- index/index.cue | grep -q .; then
+  log_failure "index/index.cue has uncommitted changes - commit it before publishing"
+  exit 1
+fi
+log_success "index/index.cue is clean"
+
+# Detect next version
+# -----------------------------------------------------------------------------
+log_heading "Detecting Next Index Version"
+
+declare latest_tag next_version
+latest_tag="$(git -C "${REPO_ROOT}" ls-remote --tags origin \
+  | grep "refs/tags/index/" \
+  | sort -t/ -k4 -V \
+  | tail -1 \
+  | awk '{print $2}' \
+  | sed 's|refs/tags/index/||')"
+
+if [[ -z "${latest_tag}" ]]; then
+  next_version="v1.0.0"
+  log_message "latest-version: '(none on remote)'"
+  log_message "  next-version: '${next_version}' (seeded for first publish)"
+else
+  declare major minor patch
+  IFS='.' read -r major minor patch <<< "${latest_tag#v}"
+  next_version="v${major}.${minor}.$((patch + 1))"
+  log_message "latest-version: '${latest_tag}'"
+  log_message "  next-version: '${next_version}'"
+fi
+
+declare git_tag="index/${next_version}"
+log_message "       git-tag: '${git_tag}'"
+
+if git -C "${REPO_ROOT}" tag --list | grep -qx "${git_tag}"; then
+  log_failure "Tag '${git_tag}' already exists locally"
+  exit 1
+fi
+log_success "Tag does not already exist"
+
+# Main Logic
+# -----------------------------------------------------------------------------
+log_heading "Creating Git Tag"
+
+if git -C "${REPO_ROOT}" tag "${git_tag}"; then
+  log_success "Tagged '${git_tag}'"
+else
+  log_failure "Failed to create tag '${git_tag}'"
+  exit 1
+fi
+
+log_heading "Publishing to CUE Registry"
+
+if (cd "${REPO_ROOT}/index" && cue mod publish "${next_version}"); then
+  log_success "Published index@${next_version}"
+else
+  log_failure "Failed to publish index@${next_version}"
+  exit 1
+fi
+
+log_heading "Pushing to Origin"
+
+if git -C "${REPO_ROOT}" push origin main; then
+  log_success "Pushed main"
+else
+  log_failure "Failed to push main"
+  exit 1
+fi
+
+if git -C "${REPO_ROOT}" push origin "${git_tag}"; then
+  log_success "Pushed '${git_tag}'"
+else
+  log_failure "Failed to push '${git_tag}'"
+  exit 1
+fi
+
+log_done

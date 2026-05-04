@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+# Environment setup
+# -----------------------------------------------------------------------------
+set -o pipefail
+[[ ${DEBUG-} ]] && set -o xtrace
+SCRIPT_DIR="$(cd "${BASH_SOURCE[0]%/*}" || exit 1; pwd)"
+[[ ":${PATH}:" != *:"${SCRIPT_DIR}":* ]] && export PATH="${SCRIPT_DIR}:${PATH}"
+source "${SCRIPT_DIR}/lib.sh"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." || exit 1; pwd)"
+
+function print_usage() {
+  cat <<EOF
+Usage: $(basename "$0")
+
+Push the main branch and all local tags to origin.
+
+Dependencies:
+  git    Git version control
+
+Optional arguments:
+  -h, --help    Show this help message and exit
+EOF
+}
+if [[ "${1}" == "-h" || "${1}" == "--help" ]]; then
+  print_usage
+  exit 0
+fi
+if [[ $# -gt 0 ]]; then
+  print_usage
+  exit 1
+fi
+
+function ctrlc_trap() {
+  log_newline
+  log_warning "Script interrupted. Exiting."
+  exit 130
+}
+trap ctrlc_trap SIGINT
+
+# Title and Dependency Checks
+# -----------------------------------------------------------------------------
+log_newline
+log_title "Git Push"
+
+if ! command -v git >/dev/null; then
+  log_error "Missing dependency - 'git'"
+  exit 1
+fi
+
+# Main Logic
+# -----------------------------------------------------------------------------
+log_heading "Pushing main"
+
+if git -C "${REPO_ROOT}" push origin main; then
+  log_success "main pushed"
+else
+  log_failure "Failed to push main"
+  exit 1
+fi
+
+log_heading "Pushing tags"
+
+if git -C "${REPO_ROOT}" push origin --tags; then
+  log_success "Tags pushed"
+else
+  log_failure "Failed to push tags"
+  exit 1
+fi
+
+log_done

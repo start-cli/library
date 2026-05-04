@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+
+# Environment setup
+# -----------------------------------------------------------------------------
+set -o pipefail
+[[ ${DEBUG-} ]] && set -o xtrace
+SCRIPT_DIR="$(cd "${BASH_SOURCE[0]%/*}" || exit 1; pwd)"
+[[ ":${PATH}:" != *:"${SCRIPT_DIR}":* ]] && export PATH="${SCRIPT_DIR}:${PATH}"
+source "${SCRIPT_DIR}/lib.sh"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." || exit 1; pwd)"
+
+function print_usage() {
+  cat <<EOF
+Usage: $(basename "$0") <module-path> <version>
+
+Create a git tag and publish a single CUE module to the CUE registry.
+Does not push to the git remote - run git-push after publishing all modules.
+The module-path is relative to the repository root.
+
+Dependencies:
+  cue    The CUE CLI tool
+  git    Git version control
+
+Required arguments:
+  module-path    Path to the module directory (e.g., roles/git/agent)
+  version        Version to publish (e.g., v0.1.0)
+
+Optional arguments:
+  -h, --help     Show this help message and exit
+EOF
+}
+if [[ $# -ne 2 || "${1}" == "-h" || "${1}" == "--help" ]]; then
+  print_usage
+  exit 1
+fi
+
+function ctrlc_trap() {
+  log_newline
+  log_warning "Script interrupted. Exiting."
+  exit 130
+}
+trap ctrlc_trap SIGINT
+
+# Title and Dependency Checks
+# -----------------------------------------------------------------------------
+log_newline
+log_title "Publish Module"
+
+for cmd in cue git; do
+  if ! command -v "${cmd}" >/dev/null; then
+    log_error "Missing dependency - '${cmd}'"
+    exit 1
+  fi
+done
+
+# Report Operational Values
+# -----------------------------------------------------------------------------
+log_heading "Operational Values"
+
+declare module_path="${1}"
+declare version="${2}"
+declare module_abs="${REPO_ROOT}/${module_path}"
+declare git_tag="${module_path}/${version}"
+
+log_message "module-path: '${module_path}'"
+log_message "    version: '${version}'"
+log_message "    git-tag: '${git_tag}'"
+
+# Validation Checks
+# -----------------------------------------------------------------------------
+log_heading "Validation Checks"
+
+if [[ ! -d "${module_abs}" ]]; then
+  log_failure "Directory not found: '${module_abs}'"
+  exit 1
+fi
+log_success "Directory exists"
+
+if [[ ! -f "${module_abs}/cue.mod/module.cue" ]]; then
+  log_failure "Not a CUE module - missing cue.mod/module.cue"
+  exit 1
+fi
+log_success "CUE module found"
+
+if [[ ! "${version}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  log_failure "Invalid version format '${version}' - expected vX.Y.Z"
+  exit 1
+fi
+log_success "Version format valid"
+
+if git -C "${REPO_ROOT}" tag --list | grep -qx "${git_tag}"; then
+  log_failure "Tag '${git_tag}' already exists locally"
+  exit 1
+fi
+log_success "Tag does not already exist"
+
+# Main Logic
+# -----------------------------------------------------------------------------
+log_heading "Creating Git Tag"
+
+if git -C "${REPO_ROOT}" tag "${git_tag}"; then
+  log_success "Tagged '${git_tag}'"
+else
+  log_failure "Failed to create tag '${git_tag}'"
+  exit 1
+fi
+
+log_heading "Publishing to CUE Registry"
+
+if (cd "${module_abs}" && cue mod publish "${version}"); then
+  log_success "Published ${module_path}@${version}"
+else
+  log_failure "Failed to publish ${module_path}@${version}"
+  exit 1
+fi
+
+log_newline
+log_message "Run git-push to push the tag to origin."
+log_done
