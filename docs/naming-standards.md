@@ -19,6 +19,31 @@ This document describes the structure of the **name** for each category. Example
 - Use only the segments needed for clarity
 - Each segment of the name maps to a directory in the repository
 
+## CUE Package Names
+
+The `package` declaration inside a module's `.cue` file must be a valid CUE identifier (no hyphens). When the last path segment of the name contains hyphens, strip them in the package declaration.
+
+| Last segment | Package declaration |
+|--------------|---------------------|
+| `interactive` | `package interactive` |
+| `agents-md` | `package agentsmd` |
+| `git-diff` | `package gitdiff` |
+| `bypass-permissions` | `package bypasspermissions` |
+| `non-interactive` | `package noninteractive` |
+
+Strip hyphens; do not substitute underscores. This keeps one convention across the library.
+
+Consumers importing a module whose package name does not match the last URL segment must use the `:pkgname` import suffix:
+
+```cue
+import (
+    ctx "github.com/start-cli/library/contexts/cwd/agents-md@v1:agentsmd"
+    tsk "github.com/start-cli/library/tasks/review/git-diff@v1:gitdiff"
+)
+```
+
+This rule applies to new modules and to any republish at the next major version. The v1 modules `agents/{claude,copilot,gemini}/{bypass-permissions,non-interactive}` use the legacy underscore form (`bypass_permissions`, `non_interactive`); they remain on v1 for compatibility and convert to the stripped form at v2.
+
 ## Agents
 
 Pattern: `tool/variant`
