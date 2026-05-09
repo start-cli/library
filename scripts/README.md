@@ -27,6 +27,31 @@ Notes:
 - Does not run cue mod tidy - run that manually when first creating a module
 - Exits non-zero on any validation failure
 
+## validate-index
+
+Validate the index module by running cue vet and asserting the non-TTY
+default-resolution contract: every bin appearing in two or more agent index
+entries must have at least one entry whose key ends `/interactive` or has no
+slash. The contract check is computed in pure CUE so the script has no
+dependencies beyond the CUE CLI.
+
+Usage: validate-index [<index-dir>]
+
+Arguments:
+
+  index-dir    Path to the index module (default: index/)
+
+Examples:
+
+  validate-index
+  validate-index path/to/fixture-index
+
+Notes:
+
+- Exits non-zero on cue vet failure or any contract violation
+- Violations print as JSON listing each offending bin and the keys involved
+- See docs/agent-patterns.md for the contract rationale
+
 ## publish-module
 
 Create a git tag and publish a single CUE module to the CUE registry.

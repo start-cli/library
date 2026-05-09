@@ -92,6 +92,11 @@ The fully-qualified user-facing address is `agents:<cli-tool>/<variant>` (e.g. `
 | `gemini/bypass-permissions` | Interactive | Bypass all |
 | `gemini/non-interactive` | Non-interactive | Default |
 | `gemini/unattended` | Non-interactive | Bypass all |
+| `copilot/interactive` | Interactive | Default |
+| `copilot/edit` | Interactive | Auto-edit |
+| `copilot/bypass-permissions` | Interactive | Bypass all |
+| `copilot/non-interactive` | Non-interactive | Default |
+| `copilot/unattended` | Non-interactive | Bypass all |
 
 ## Choosing a Pattern
 
@@ -110,14 +115,24 @@ Consider:
 - **Task scope**: Exploratory? Interactive. Well-defined? Non-interactive or Unattended.
 - **Risk tolerance**: High stakes? Default permissions. Routine automation? Bypass.
 
+## Non-TTY Default-Resolution Contract
+
+If a bin appears in multiple agent index entries, at least one of those entries must end with `/interactive` or be a bare-name key (no slash). This is the non-TTY default-resolution contract: the start binary uses it as a tiebreaker when no human is present to choose a variant.
+
+The contract is enforced by `library/scripts/validate-index`. Run it after any change to `index/index.cue` that adds, removes, or renames an agent entry.
+
+In TTY mode the user always picks a variant from a list, so this contract has no effect on the interactive flow.
+
 ## CLI Flag Reference
 
 The patterns map to CLI flags:
 
-| Pattern | Claude Flags | Gemini Flags |
-|---------|--------------|--------------|
-| Base | `--permission-mode default` | `--approval-mode default --prompt-interactive` |
-| Edit | `--permission-mode acceptEdits` | `--approval-mode auto_edit --prompt-interactive` |
-| Bypass Permissions | `--permission-mode bypassPermissions` | `--approval-mode yolo --prompt-interactive` |
-| Non-interactive | `--permission-mode default --print` | `--approval-mode default --prompt` |
-| Unattended | `--permission-mode bypassPermissions --print` | `--approval-mode yolo --prompt` |
+| Pattern | Claude Flags | Gemini Flags | Copilot Flags |
+|---------|--------------|--------------|---------------|
+| Base | `--permission-mode default` | `--approval-mode default --prompt-interactive` | `--interactive` |
+| Edit | `--permission-mode acceptEdits` | `--approval-mode auto_edit --prompt-interactive` | `--allow-tool=write --interactive` |
+| Bypass Permissions | `--permission-mode bypassPermissions` | `--approval-mode yolo --prompt-interactive` | `--allow-all --interactive` |
+| Non-interactive | `--permission-mode default --print` | `--approval-mode default --prompt` | `--allow-all-tools --prompt` |
+| Unattended | `--permission-mode bypassPermissions --print` | `--approval-mode yolo --prompt` | `--allow-all --prompt` |
+
+Note: Copilot's "Non-interactive" variant uses `--allow-all-tools` rather than a default-permission flag, so its effective permission posture differs from the Claude and Gemini Non-interactive variants. The pattern label captures the interactivity dimension; consult each agent's `command` field for the exact flags it runs.

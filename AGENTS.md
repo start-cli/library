@@ -124,6 +124,12 @@ cue mod tidy
 cue vet ./...
 ```
 
+Index validation (cue vet plus the non-TTY default-resolution contract for the agents map):
+
+```bash
+scripts/validate-index
+```
+
 ## References
 
 - Naming standards: docs/naming-standards.md

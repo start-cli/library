@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+
+# Environment setup
+# -----------------------------------------------------------------------------
+set -o pipefail
+[[ ${DEBUG-} ]] && set -o xtrace
+SCRIPT_DIR="$(cd "${BASH_SOURCE[0]%/*}" || exit 1; pwd)"
+[[ ":${PATH}:" != *:"${SCRIPT_DIR}":* ]] && export PATH="${SCRIPT_DIR}:${PATH}"
+source "${SCRIPT_DIR}/lib.sh"
+REPO_ROOT="$(cd "${SCRIPT_DIR}/.." || exit 1; pwd)"
+
+function print_usage() {
+  cat <<EOF
+Usage: $(basename "$0") [<index-dir>]
+
+Validate the index module by running cue vet and asserting the non-TTY
+default-resolution contract: every bin appearing in two or more agent
+index entries must have at least one entry whose key ends '/interactive'
+or has no slash (a bare-name entry). The start CLI uses this rule as a
+tiebreaker when no human is available to choose a variant.
+
+The contract check is computed in pure CUE so the script has no
+dependencies beyond the CUE CLI.
+
+Dependencies:
+  cue   The CUE CLI tool
+
+Optional arguments:
+  index-dir   Path to the index module (default: index/, relative to repo root)
+  -h, --help  Show this help message and exit
+EOF
+}
+if [[ "${1-}" == "-h" || "${1-}" == "--help" ]]; then
+  print_usage
+  exit 0
+fi
+if [[ $# -gt 1 ]]; then
+  print_usage
+  exit 1
+fi
+
+function ctrlc_trap() {
+  log_newline
+  log_warning "Script interrupted. Exiting."
+  exit 130
+}
+trap ctrlc_trap SIGINT
+
+# Title and Dependency Checks
+# -----------------------------------------------------------------------------
+log_newline
+log_title "Validate Index"
+
+if ! command -v cue >/dev/null; then
+  log_error "Missing dependency - 'cue'"
+  exit 1
+fi
+
+# Report Operational Values
+# -----------------------------------------------------------------------------
+log_heading "Operational Values"
+
+declare index_dir="${1-index}"
+declare index_path
+if [[ "${index_dir}" = /* ]]; then
+  index_path="${index_dir}"
+else
+  index_path="${REPO_ROOT}/${index_dir}"
+fi
+
+log_message " index-dir: '${index_dir}'"
+log_message "index-path: '${index_path}'"
+
+# Validation Checks
+# -----------------------------------------------------------------------------
+log_heading "Validation Checks"
+
+if [[ ! -d "${index_path}" ]]; then
+  log_failure "Directory not found: '${index_path}'"
+  exit 1
+fi
+log_success "Directory exists"
+
+if [[ ! -f "${index_path}/cue.mod/module.cue" ]]; then
+  log_failure "Not a CUE module - missing cue.mod/module.cue"
+  exit 1
+fi
+log_success "CUE module found"
+
+if [[ ! -f "${index_path}/index.cue" ]]; then
+  log_failure "index.cue not found in '${index_path}'"
+  exit 1
+fi
+log_success "index.cue found"
+
+# Detect the package name so the validation overlay merges into the same
+# package as index.cue regardless of where this script is reused.
+declare package_name
+package_name="$(awk '/^package[[:space:]]+/ {print $2; exit}' "${index_path}/index.cue")"
+if [[ -z "${package_name}" ]]; then
+  log_failure "Could not detect 'package' declaration in index.cue"
+  exit 1
+fi
+log_success "Package detected: '${package_name}'"
+
+# Main Logic
+# -----------------------------------------------------------------------------
+log_heading "cue vet"
+
+if (cd "${index_path}" && cue vet ./...); then
+  log_success "cue vet passed"
+else
+  log_failure "cue vet failed"
+  exit 1
+fi
+
+log_heading "Non-TTY Default-Resolution Contract"
+
+# The validation is expressed as a sidecar CUE file merged into the index
+# package via stdin. It groups agent keys by bin and emits one record per
+# violating bin (multi-variant with no '/interactive' or bare-name key).
+declare violations
+if ! violations="$(cd "${index_path}" && cue eval index.cue - -e violations --out json <<CUE
+package ${package_name}
+
+import "strings"
+
+_keysByBin: [string]: [...string]
+_keysByBin: {
+	for _, v in agents {
+		"\(v.bin)": [for k, e in agents if e.bin == v.bin {k}]
+	}
+}
+
+violations: [
+	for binName, ks in _keysByBin
+	if len(ks) >= 2
+	let interactives = [for k in ks if strings.HasSuffix(k, "/interactive") {k}]
+	let bareNames = [for k in ks if !strings.Contains(k, "/") {k}]
+	if len(interactives) == 0 && len(bareNames) == 0 {
+		bin:  binName
+		keys: ks
+	},
+]
+CUE
+)"; then
+  log_failure "Failed to evaluate validation overlay"
+  exit 1
+fi
+
+# Collapse whitespace before comparing so '[]' or '[\n]' both register as
+# empty without parsing JSON.
+declare trimmed
+trimmed="$(echo "${violations}" | tr -d '[:space:]')"
+
+if [[ "${trimmed}" != "[]" ]]; then
+  log_failure "Non-TTY contract violated"
+  log_newline
+  echo "${violations}" >&2
+  log_newline
+  log_message "Each entry above lists a bin and the index keys that share it."
+  log_message "Add an '/interactive' or bare-name entry to fix the violation."
+  log_message "See library/docs/agent-patterns.md for the contract details."
+  exit 1
+fi
+log_success "Every multi-variant bin has an /interactive or bare-name entry"
+
+log_done
