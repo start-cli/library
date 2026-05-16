@@ -322,6 +322,18 @@ contexts: {
 tasks: [string]: schemas.#IndexEntry
 
 tasks: {
+	"claude/statusline/create": {
+		module:      "github.com/start-cli/library/tasks/claude/statusline/create@v1"
+		version:     "v1.0.0"
+		description: "Install the Claude Code statusline script and wire it into settings.json"
+		tags: ["claude", "statusline", "configuration", "settings", "shell"]
+	}
+	"claude/statusline/update": {
+		module:      "github.com/start-cli/library/tasks/claude/statusline/update@v1"
+		version:     "v1.0.0"
+		description: "Interactively customise the Claude Code statusline script"
+		tags: ["claude", "statusline", "customise", "interactive", "settings"]
+	}
 	"golang/debug": {
 		module:      "github.com/start-cli/library/tasks/golang/debug@v1"
 		version:     "v1.0.0"
