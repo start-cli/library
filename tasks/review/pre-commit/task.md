@@ -22,44 +22,79 @@ This is not a general-purpose repository review. The diff output is the guide --
 3. Run the diff command and read the output to understand the scope and intent of the changes
 4. For each changed file, read the full file and related files to understand surrounding context
 5. Review the changes against all criteria below
-6. Produce a structured report of findings
-7. Unless instructed otherwise, save the report to `.start/reviews/YYYY-MM-DD-pre-commit-NN.md`
+6. Produce a structured report of findings and present it inline (do not save to disk yet)
+7. Reserve the filename `.start/reviews/YYYY-MM-DD-pre-commit-NN.md` for any save during this session
    - Use today's date for `YYYY-MM-DD`
    - Increment `NN` based on existing files in `.start/reviews/` matching the date and type, starting at `01`
+8. Prompt the user with two options:
+   - Type `save` to write the report to the reserved filename and stop here
+   - Type `continue` to proceed to remediation. The `save` command remains available during remediation
 
 ### Phase 2: Remediation
 
-Work through findings in severity order: critical, high, medium, low. Skip info-level items (report only, not actionable).
+At any point, type `save` to write the report plus current remediation progress to the reserved filename from Phase 1 and exit. Findings not yet processed are recorded as `Pending` in the Remediation Summary.
 
-For each finding:
+If the report contains info-level findings, display them up front as a single table so the user has visibility before the fix/skip walk begins:
 
-1. Re-read the target code and related files to validate the solution and ensure earlier fixes have not shifted the surrounding code
-2. Describe the issue in detail, referencing the specific file and code
-3. Recommend a solution, explaining why this approach is preferred over alternatives
-4. Pause for discussion
-5. The user selects one of:
-   - Fix: Apply the change and briefly confirm what was done
-   - Skip or next: acknowledge and move to the next finding
+```
+### Info-level Findings
+
+| # | Category | Location | Note |
+|---|----------|----------|------|
+| 1 | Readability | src/foo.go:42 | Brief observation |
+```
+
+Info items are not part of the fix/skip walk -- they are recorded only.
+
+Let `M` be the count of actionable findings (critical, high, medium, low). Walk them in severity order. For each finding, use this presentation template:
+
+```
+### Issue N of M: <short title>
+
+Severity: <critical | high | medium | low>
+Category: <e.g. Security, Correctness>
+Location: <file:line>
+
+Issue
+<2-4 sentence description and why it matters in context>
+
+Recommendation
+<concrete proposed change, referencing specific code. If trade-offs exist, explain why this approach over alternatives>
+
+Action: awaiting decision (fix / skip / project)
+```
+
+Per-finding flow:
+
+1. Re-read the target code and related code carefully, then critically re-evaluate the recommendation. The original finding may have been wrong, or rendered obsolete by an earlier fix. If the recommendation no longer holds, say so and revise or withdraw it before presenting
+2. Print the finding using the template above
+3. If the fix is purely additive (new unit tests, or new or clarifying code comments), apply it immediately, update the printed Action to `Applied`, and briefly confirm what was done. Modifications to existing tests still pause for discussion -- they can mask regressions by relaxing assertions
+4. Otherwise, pause for discussion. Wait for an explicit per-finding response before proceeding -- never assume blanket approval from an earlier response. A `fix` on one finding does not authorise the next. If a response is ambiguous, ask which finding it applies to. The user selects one of:
+   - `fix`: apply the change, record as `Fixed`, and briefly confirm what was done
+   - `skip`: acknowledge, record as `Skipped`, and move to the next finding
+   - `project`: spin the finding out as a standalone follow-up file (see Project File Format below), record as `Project: <filename>`, and move to the next finding without offering an inline fix
 
 Remediation guidance:
 
 - Apply minimal, targeted fixes -- refactor surrounding code if required for the issue at hand
-- If a fix would be too large or risky to apply inline, recommend it as a follow-up task instead of attempting it here
-- Keep each fix focused on the the issue being addressed and related code
+- If a fix would be too large or risky to apply inline, recommend the user select `project` to spin it out rather than attempting an inline fix
+- Keep each fix focused on the issue being addressed and related code
 
 ### Phase 3: Post-fix Check
 
 After all findings have been processed, do a focused re-check on only the code that was modified by fixes during Phase 2.
 
 - Only examine the lines and immediate context touched by fixes, not a full re-review
-- If new issues are found, walk through them using the same fix/skip flow from Phase 2
+- If new issues are found, walk through them using the same fix/skip/project flow from Phase 2
 - This pass should be lightweight -- its purpose is to catch regressions introduced by the fixes themselves
+- After fixes are applied, run any formatters or linters the project has configured on the touched files and address any new violations they surface
 
 ### Phase 4: Wrap-up
 
 1. Print a summary table of all findings and their outcomes
-2. Update the saved report file with the Remediation Summary section (see Report Format below)
-3. Remind the user to review the changes before committing
+2. If `save` was already invoked during this session, overwrite the reserved filename with the final report including the Remediation Summary section, then continue
+3. Otherwise, prompt the user: type `save` to write the report to the reserved filename. Any other reply skips the save
+4. Remind the user to review the changes before committing
 
 ## Reviewer Guidance
 
@@ -72,6 +107,7 @@ After all findings have been processed, do a focused re-check on only the code t
 - Classify findings by severity (critical, high, medium, low, info):
   - Not every review category will produce findings at every severity level
   - Use the levels that fit rather than forcing findings into categories that do not apply
+- Findings about multiple unrelated changes within a single commit are classified as `info`
 - Write "None" for any severity level where no findings exist. Every section must be present in the report
 - It is acceptable to find no issues. If the changes are well-implemented, say so. Do not manufacture findings to justify the review
 
@@ -221,7 +257,7 @@ Structure the review report as follows:
 
 Scope: <number of files changed, insertions, deletions>
 Intent: <brief description of what the changes accomplish>
-Findings: {count per severity, e.g. 2 critical, 1 high, 3 medium, 1 low}
+Findings: {count per severity, e.g. 2 critical, 1 high, 3 medium, 1 low, 4 info}
 
 ## Critical Findings
 
@@ -235,16 +271,25 @@ Findings: {count per severity, e.g. 2 critical, 1 high, 3 medium, 1 low}
 
 <issues worth addressing but not blocking, or "None">
 
-## Low / Info
+## Low Findings
 
-<minor suggestions and observations, or "None">
+<minor suggestions worth addressing, or "None">
+
+## Info Findings
+
+<observations recorded for awareness only, not part of the fix/skip walk, or "None">
 
 ## Assessment
 
 <overall assessment of the changes, noting both strengths and weaknesses>
 ```
 
-After remediation, append the following section to the report:
+When the report is saved after remediation begins, append the following section. Outcome values are:
+
+- `Fixed` -- the change was applied
+- `Skipped` -- the user declined the fix
+- `Project: <filename>` -- spun out as a standalone follow-up (see Project File Format below)
+- `Pending` -- `save` was invoked before the finding had been processed
 
 ```
 ## Remediation Summary
@@ -253,4 +298,60 @@ After remediation, append the following section to the report:
 |---|----------|---------|---------|
 | 1 | critical | Brief description | Fixed |
 | 2 | high     | Brief description | Skipped |
+| 3 | medium   | Brief description | Project: 01-project-race-condition-in-token-refresh.md |
+| 4 | low      | Brief description | Pending |
 ```
+
+## Project File Format
+
+When `project` is selected during remediation, write a standalone file at the repository root named `NN-project-<slug>.md` where:
+
+- `NN` starts at `01` and increments based on existing files matching the pattern
+- `<title>` is the `<short title>` value from the presentation template used during remediation
+- `<slug>` is `<title>` lowercased and hyphenated (e.g. "Race condition in token refresh" becomes `race-condition-in-token-refresh`)
+
+The file must be fully self-contained so a new AI agent session can pick it up with no extra context. Include only the sections below that apply -- right-size the document to the scope of the finding.
+
+```
+# <title>
+
+Source: pre-commit review on YYYY-MM-DD
+Severity: <critical | high | medium | low>
+Category: <e.g. Security, Correctness>
+Location: <file:line>
+
+## Goal
+
+One to three sentences on what is being built or changed and why. Focus on outcome and motivation, not tasks.
+
+## Scope
+
+What is in scope; what is explicitly out of scope.
+
+## Current State
+
+Relevant existing state -- files, configuration, and the finding itself -- enough that the implementer can read the requirements with understanding.
+
+## Requirements
+
+Numbered, clear, verifiable deliverables. State what must be produced, not how.
+
+## Implementation Plan
+
+Ordered steps at a level that gives direction without prescribing code. Snippets are acceptable to clarify non-obvious integration. Omit if the requirements are self-explanatory.
+
+## Constraints
+
+Hard rules: language version, target platforms, required tooling, compatibility requirements. Items that cannot be violated without breaking the project.
+
+## Acceptance Criteria
+
+Observable, verifiable outcomes that signal completion. Project-specific only -- do not list universals like "build passes" or "tests pass".
+```
+
+Writing guidelines:
+
+- Define outcomes and constraints, not keystrokes. The implementing agent owns implementation details
+- Be explicit and complete -- do not reference the conversation that produced the finding
+- Code snippets are acceptable for clarification; full implementations are not
+- Use direct language: "do X", not "consider doing X"
