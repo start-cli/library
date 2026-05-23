@@ -516,7 +516,7 @@ tasks: {
 	}
 	"start/module/role/create": {
 		module:      "github.com/start-cli/library/tasks/start/module/role/create@v1"
-		version:     "v1.0.0"
+		version:     "v1.1.0"
 		description: "Create a new role in the library repository"
 		tags: ["library", "role", "create", "cue", "interactive"]
 	}

@@ -165,6 +165,8 @@ Use this guide to craft the content for each role.md file:
   - Choose the most fitting style word based on the topic's nature (e.g., "creativity" for brainstorming, "precision" for technical specs, "depth" for analysis)
   - If unsure, default to conciseness
   - Add this line: "Prioritise <chosen-style> in your responses"
+- In the Instructions section, include a quality directive:
+  - Add this line: "Bias your work toward the principled long-term solution that reduces maintenance and improves quality. Do not default to the smallest-diff fix."
 
 Restrictions:
 
