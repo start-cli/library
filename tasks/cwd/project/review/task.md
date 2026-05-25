@@ -6,18 +6,13 @@ Goal: catch issues that would force rework if discovered mid-implementation. Rou
 
 Finding no new issues is a valid outcome. If the project document is complete and prior reviews have surfaced the real concerns, say so rather than invent findings to justify the run.
 
-## Prerequisites
-
-- A project document describing the work
-- A repository with the codebase the project will touch
-
 ## Workflow
 
 ### Phase 1: Review
 
 1. Find the project document. Look for clues in:
    - `AGENTS.md` — check for any reference to a current or active project
-   - Common filenames at the repo root: `project.md`, `spec.md`, `ROADMAP.md`
+   - Common filenames at the repo root: `project.md`, `spec.md`, `plan.md`, `*.md`
    - Agent directories: `.ai/`, `.agents/`, `.claude/`, `.cursor/`, `.gemini/`, or similar
    - Documentation folders: `docs/`
 
@@ -30,7 +25,7 @@ Finding no new issues is a valid outcome. If the project document is complete an
    - Research external facts only when the project's approach turns on them — a specific dependency version, an API behaviour, or a platform capability. Generic dependency scans produce noise over repeated runs
 5. Identify concerns that meet the Goal bar — issues that would force rework, cause incorrect behaviour, or leave a critical requirement unmet. Apply the Articulation Test and Regret Filter (see Reviewer Guidance) before listing each one.
 6. Produce a structured report of findings using the Report Format (below) and present it inline. No disk writes.
-7. Display the Top-level Prompt (see Commands).
+7. If there are no actionable findings, skip to Phase 4 and declare Ready to implement. Otherwise display the Top-level Prompt (see Commands).
 
 ### Size and Coherence Check
 
@@ -51,32 +46,43 @@ Apply safe items immediately, without prompting. Safe items are anything that do
 - Comments — add, remove, or change
 - Documentation — add, remove, or change, excluding the project document itself
 
-State what was applied for each safe item. Safe items do not count toward `M`.
+State what was applied for each safe item. Safe items do not count toward `T`.
 
-Let `M` be the count of remaining actionable findings (everything not auto-applied above). Walk them one at a time. For each finding:
+Let `T` be the count of remaining actionable findings (everything not auto-applied above). The top-level choice from Phase 1 selects how they are handled: `C` walks them one at a time, `A` applies the recommended resolution to every finding automatically. Letters are case-insensitive.
+
+Continue (`C`) walks the findings one at a time. For each finding:
 
 1. Re-read the relevant context — the project document and any referenced code — and critically re-evaluate the finding. The original may have been wrong, or rendered obsolete by an earlier fix. If the finding no longer holds, say so and revise or withdraw it before presenting.
-2. Present the finding using the Per-item Template (below) with `n` as the position in the walk and `M` as the total. `M` excludes safe items applied above.
-3. Display the Per-item Prompt (see Commands) and pause for an explicit decision. Never assume blanket approval from an earlier response. A `fix` on one finding does not authorise the next. If a response is ambiguous, ask which finding it applies to.
+2. Present the finding using the Per-item Template (below) with `n` as the position in the walk and `T` as the total. `T` excludes safe items applied above.
+3. Display the Per-item Prompt (see Commands) and pause for an explicit decision. Never assume blanket approval from an earlier response. Accepting one finding does not authorise the next. If a response is ambiguous, ask which finding it applies to.
 
-Per-item command semantics. Outcomes are tracked in-session — they are not written to disk at the moment of decision. They surface in the Phase 4 summary table and in the Remediation Summary if `save` is invoked.
+Per-item command semantics. Letters are case-insensitive. Outcomes are tracked in-session — they are not written to disk at the moment of decision. They surface in the Phase 4 summary table and in the Remediation Summary if the review is saved.
 
-- `fix` — apply the resolution to the project document, fully integrating it so the underlying issue is covered by the new content. Do not leave an Issues Discovered section; resolved items become polished project content. Track as `Fixed`. Briefly confirm what was done.
-- `skip` — acknowledge and move on. Track as `Skipped`.
-- `project` — spin the finding out as a standalone follow-up file (see Project File Format below). Track as `Project: <filename>`. Move to the next finding without offering an inline fix.
-- `save` — see Save (below).
+- An option letter (`A`, `B`, `C` …) — apply that specific option to the project document, fully integrating it so the underlying issue is covered by the new content. Do not leave an Issues Discovered section; resolved items become polished project content. Track as `Fixed`. Briefly confirm what was done.
+- `R` — apply exactly what the Recommendation states, which may be a single option, a combination, or a blend. Otherwise identical to applying an option. Track as `Fixed`.
+- `N` — acknowledge and move to the next finding. Track as `Skipped`.
+- `P` — spin the finding out as a standalone follow-up file (see Project File Format below). Track as `Project: <filename>`. Move to the next finding without offering an inline resolution.
+- `S` — see Save (below).
+
+All (`A`) applies recommendations automatically. Work through the `T` findings in order without displaying the Per-item Prompt. For each finding:
+
+1. Announce `(n of T) <short title>`.
+2. Re-read the relevant context and critically re-evaluate the finding, as in the walk. If it no longer holds, say so and skip it, tracking as `Skipped`.
+3. Apply the recommended resolution — identical to `R` — and briefly confirm what was done. Track as `Fixed`.
+
+The edit is the checkpoint. If you deny an edit, stop and discuss that finding; once it is resolved, resume the run for the remaining findings or switch to the one-at-a-time walk. For `decision` findings, the recommended alternative is applied — deny the edit to discuss if a different choice is wanted.
 
 Remediation guidance:
 
 - Bias recommendations toward the principled long-term solution that reduces maintenance and improves quality. Do not default to the smallest-diff resolution.
 - Apply minimal, targeted edits to integrate the resolution. Refactor surrounding text only when required to make the resolution land cleanly.
-- If a fix would be too large or risky to apply inline, recommend `project` to spin it out rather than attempting it inline.
+- If a resolution would be too large or risky to apply inline, recommend `P` to spin it out rather than attempting it inline.
 
 ### Phase 3: Satisfaction Pass
 
 After all findings have been processed, re-read the project document with fresh eyes. Surface any new issues the edits themselves introduced — internal inconsistencies, gaps created by removed content, contradictions with sections that were not touched.
 
-- Walk new findings using the same per-item flow from Phase 2
+- Handle new findings using the mode chosen at the top level — walk them under `C`, auto-apply them under `A` (deny an edit to discuss)
 - This pass is lightweight — catch regressions introduced by the fixes, not run a full second review
 
 ### Phase 4: Wrap-up
@@ -88,7 +94,7 @@ After all findings have been processed, re-read the project document with fresh 
 
    An issue blocks implementation if proceeding without resolving it would force significant rework, cause incorrect behaviour, or leave a critical requirement unmet.
 2. Print a summary table of all findings and their outcomes (see Remediation Summary in the Report Format).
-3. Prompt the user once: type `save` to write the final report. Any other reply skips the save.
+3. Prompt the user once: enter `S` to write the final report. Any other reply skips the save.
 
 ## Reviewer Guidance
 
@@ -114,7 +120,7 @@ After all findings have been processed, re-read the project document with fresh 
 This template is a suggestion. Keep details succinct; expand only when the finding genuinely warrants it.
 
 ```
-### Finding n of M: <short title>
+### Finding n of T: <short title>
 
 Category: <decision | design | gap | risk | dependency>
 Location: <file:line, or section heading if relevant>
@@ -123,15 +129,16 @@ Issue
 <what the issue is and why it matters in context>
 
 Options
-<succinct options when alternatives are useful; omit if the resolution is obvious>
+A. <option>
+B. <option>
+C. <option>
 
-Recommendation
-<which option, with a brief why focused on the principled long-term solution>
-
-Action: awaiting decision (fix / skip / project)
+Recommendation (B): <which option, with a brief why focused on the principled long-term solution>
 ```
 
-For decisions, the Options block lists the alternatives the owner is choosing between. For other categories, include an Options block only when alternatives clarify the choice — otherwise lead with the Recommendation.
+Display the Per-item Prompt (see Commands) immediately after presenting the finding.
+
+For decisions, the Options block lists the alternatives the owner is choosing between, labelled from `A`. For other categories, include an Options block only when alternatives clarify the choice — otherwise omit it and lead with a single Recommendation that `R` accepts. The Recommendation names the option letter or letters it favours, and may combine options (for example `Recommendation (B + C)`).
 
 ## Report Format
 
@@ -143,18 +150,17 @@ Structure the inline review report as follows:
 Project: <path to project document>
 Intent: <one sentence on what the project sets out to do>
 Findings: <count by category, e.g. 1 decision, 2 design, 1 gap>
-Safe items applied: <count, with a brief list, or "None">
+Safe items: <changes to apply on remediation, or "None">
 
 ## Findings
 
-1. <Title> (<category>)
+A complete list of every finding — list all of them, do not truncate. The detail for each actionable finding (Issue, Options, Recommendation) is presented one at a time during the Phase 2 walk, not here.
 
-   <2–4 sentences on what the issue is and why it matters.>
-
-   Options
-   <succinct options when alternatives are useful; omit if the resolution is obvious>
-
-   Recommendation: <which option, one or two sentences on why this is the principled fit>
+| # | Category | Finding |
+|---|----------|---------|
+| 1 | <category> | <one-line summary> |
+| 2 | <category> | <one-line summary> |
+| 3 | <category> | <one-line summary> |
 
 ## Assessment
 
@@ -164,9 +170,9 @@ Safe items applied: <count, with a brief list, or "None">
 When the report is saved after remediation begins, append the section below. Outcome values:
 
 - `Fixed` — the resolution was applied to the project document
-- `Skipped` — the user declined the fix
+- `Skipped` — the finding was acknowledged with `N` and left unresolved
 - `Project: <filename>` — spun out as a standalone follow-up
-- `Pending` — `save` was invoked before the finding had been processed
+- `Pending` — `S` was invoked before the finding had been processed
 
 ```
 ## Remediation Summary
@@ -181,7 +187,7 @@ When the report is saved after remediation begins, append the section below. Out
 
 ## Project File Format
 
-When `project` is selected during remediation, write a standalone file at the repository root named `NN-project-<slug>.md` where:
+When `P` is selected during remediation, write a standalone file at the repository root named `NN-project-<slug>.md` where:
 
 - `NN` starts at `01` and increments based on existing files matching the pattern
 - `<slug>` is the short title lowercased and hyphenated (e.g. "Race condition in token refresh" becomes `race-condition-in-token-refresh`)
@@ -233,7 +239,7 @@ Writing guidelines:
 
 ## Save
 
-When `save` is invoked at any phase:
+When `S` is invoked at any phase:
 
 1. Discover the next available filename: `.start/reviews/YYYY-MM-DD-project-doc-review-NN.md` where `YYYY-MM-DD` is today's date and `NN` starts at `01`, incrementing based on existing files matching the date and slug
 2. Write the current report. If remediation has started, include the Remediation Summary section with current outcomes. Findings not yet processed are recorded as `Pending`
@@ -246,8 +252,11 @@ When `save` is invoked at any phase:
 Display verbatim at the end of Phase 1:
 
 ```
-- continue — walk through the findings
-- save — write the report to .start/reviews/ and stop
+- (C)ontinue — walk through the findings one at a time
+- (A)ll — apply the recommended resolution to every finding automatically
+- (S)ave — write the report to .start/reviews/ and stop
+
+Letters are case-insensitive.
 ```
 
 ### Per-item Prompt
@@ -255,8 +264,11 @@ Display verbatim at the end of Phase 1:
 Display verbatim after presenting each finding:
 
 ```
-- fix — apply the resolution to the project document
-- skip — record and move on
-- project — spin this out as a standalone follow-up
-- save — write the review-so-far to .start/reviews/ and stop
+- A, B, C … — apply the matching option to the project document
+- (R)ecommendation — apply exactly what was recommended
+- (N)ext — skip this finding and move on
+- (P)roject — spin this finding out as a standalone file
+- (S)ave — write the review so far to .start/reviews/ and stop
+
+Letters are case-insensitive.
 ```

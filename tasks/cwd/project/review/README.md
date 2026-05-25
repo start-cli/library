@@ -48,9 +48,9 @@ Research external facts only when the project's approach turns on them — a spe
 
 Decisions carry their options because alternatives are the point. Other categories carry a suggested resolution only when it clarifies the issue. Inventing a fix to make a finding feel substantive is a noise vector.
 
-### Stable numbering
+### Integrated resolutions
 
-Issues keep their number across the document's lifetime. Resolved items are amended in place, not moved. The Issues Discovered section becomes the project document's review history.
+Findings are numbered within a run for reference during the walk; the numbers are not preserved in the project document. A resolution is integrated directly into the project content as polished prose rather than logged — no Issues Discovered section lingers. The review history lives in the saved reports under .start/reviews/, not in the project document itself.
 
 ## The Size Check
 
