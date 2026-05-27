@@ -316,6 +316,18 @@ contexts: {
 		description: "Workspace context from .ai/workspace.md"
 		tags: ["dotai", "cwd", "workspace"]
 	}
+	"cli/design": {
+		module:      "github.com/start-cli/library/contexts/cli/design@v1"
+		version:     "v1.0.0"
+		description: "Agent-first CLI design guide for designing and auditing command-line tools"
+		tags: ["cli", "design", "agents", "guide"]
+	}
+	"golang/design/cli": {
+		module:      "github.com/start-cli/library/contexts/golang/design/cli@v1"
+		version:     "v1.0.0"
+		description: "Go CLI design guide: architecture, patterns, and conventions for command-line tools"
+		tags: ["golang", "design", "cli", "go", "guide"]
+	}
 }
 
 // Task index - maps friendly names to module paths
