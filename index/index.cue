@@ -474,9 +474,9 @@ tasks: {
 	}
 	"review/multi-agent/orchestrator": {
 		module:      "github.com/start-cli/library/tasks/review/multi-agent/orchestrator@v1"
-		version:     "v1.0.0"
-		description: "Spawn parallel review agents for comprehensive code analysis"
-		tags: ["review", "orchestration", "multi-agent", "parallel"]
+		version:     "v1.1.0"
+		description: "Orchestrate parallel review agents, consolidate findings, and walk through fixing them"
+		tags: ["review", "orchestration", "multi-agent", "parallel", "fix"]
 	}
 	"gitlab/pipeline/review": {
 		module:      "github.com/start-cli/library/tasks/gitlab/pipeline/review@v1"

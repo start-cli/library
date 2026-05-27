@@ -3,8 +3,8 @@ package orchestrator
 import "github.com/start-cli/library/schemas@v1"
 
 task: schemas.#Task & {
-	description: "Spawn parallel review agents for comprehensive code analysis"
-	tags: ["review", "orchestration", "multi-agent", "parallel"]
+	description: "Orchestrate parallel review agents, consolidate findings, and walk through fixing them"
+	tags: ["review", "orchestration", "multi-agent", "parallel", "fix"]
 	file: "@module/task.md"
 	prompt: """
 		Read {{.file}} to understand your task.
