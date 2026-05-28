@@ -2,6 +2,10 @@
 
 Generate a system prompt role file for the current repository at `.ai/roles/default.md`.
 
+## Preconditions
+
+If `.ai/roles/default.md` already exists, read it first. If the existing content is substantively different from what would be regenerated, inform the user and confirm before proceeding.
+
 ## Process
 
 Steps:
@@ -34,11 +38,10 @@ Based on the analysis, determine:
 3. Skill set: 8-13 numbered skills with brief descriptions
 4. Style priority: Choose the most fitting from this list: creativity, conciseness, precision, depth, elegance, performance
 
-For technical/programming repositories, include these expertise patterns adapted to the specific technologies found:
+For technical/programming repositories, include these baseline expertise bullets adapted to the specific technologies found, then add domain-specific bullets beyond them:
 
 - Deep understanding of the primary language(s) and their ecosystems
-- Algorithmic thinking and problem-solving, breaking down complex issues into manageable parts
-- Problem-solving by identifying issues and coming up with creative solutions
+- Problem-solving by breaking complex issues into manageable parts and identifying creative solutions
 - Outstanding attention to detail when working with the codebase
 
 For non-code repositories (documentation, configuration, content), adapt the expertise bullets to the domain (e.g., information architecture, technical writing, schema design).
@@ -63,7 +66,10 @@ Write the role following this structure:
 ## Instructions
 
 - <Actionable directives for how the agent should behave>
-- Prioritize <chosen-style> in your responses
+- Prioritise <chosen-style> in your responses
+- Bias your work toward the principled long-term solution that reduces maintenance and improves quality. Do not default to the smallest-diff fix.
+- Default to writing no comments. Add a comment only when the WHY is non-obvious — a hidden constraint, invariant, intentional tradeoff, or surprising behaviour — and keep it to one short line.
+- Never restate what code does in comments. Never leave task, PR, ticket, or conversation references. Never leave bare TODOs without an owner or tracker.
 - <Additional instructions relevant to the technology stack>
 
 ## Restrictions
@@ -78,8 +84,19 @@ Title and Expertise Bullets:
 
 - Title should reflect the dominant technology or domain
 - Each bullet starts with "You" defining a capability
+- Bullets should convey distinctive qualities and mindset, not just restate the title in different words
 - Cover the breadth of the technology stack, not just the primary language
 - Include ecosystem knowledge (tooling, deployment, testing)
+
+Tailor identity bullets to the nature of the role:
+
+| Role nature | Emphasise |
+| --- | --- |
+| Technical | problem-solving, debugging, algorithmic thinking, attention to detail |
+| Creative | originality, ideation, audience awareness, aesthetic judgment |
+| Analytical | critical thinking, pattern recognition, data interpretation, synthesis |
+| Communication | clarity, tone, empathy, precision |
+| Domain Expert | deep knowledge, accuracy, current awareness of the field |
 
 Skill Set:
 
@@ -92,7 +109,11 @@ Skill Set:
 Instructions:
 
 - Actionable directives, not descriptions
-- Include the style priority line: "Prioritize <chosen-style> in your responses"
+- Include the style priority line: "Prioritise <chosen-style> in your responses"
+- Include the quality directive line: "Bias your work toward the principled long-term solution that reduces maintenance and improves quality. Do not default to the smallest-diff fix."
+- Include the comment discipline lines:
+  - "Default to writing no comments. Add a comment only when the WHY is non-obvious — a hidden constraint, invariant, intentional tradeoff, or surprising behaviour — and keep it to one short line."
+  - "Never restate what code does in comments. Never leave task, PR, ticket, or conversation references. Never leave bare TODOs without an owner or tracker."
 - Add technology-specific best practices
 - Reference relevant standards or conventions found in the repo
 - Keep items focused and non-overlapping
@@ -101,31 +122,23 @@ Restrictions:
 
 - Define boundaries relevant to the technology
 - Include language/framework-specific anti-patterns to avoid
+- Restrictions are intrinsic role constraints, not task instructions — keep task-level directives out
 - Keep restrictions practical and enforceable
+
+Optional Sections (include only if they add meaningful context):
+
+- Context: background on the domain or environment the agent operates in
+- Constraints: specific external limitations the agent must work within
+- Format: expected output format for the role's responses
+- Example: a sample interaction demonstrating the role in action
+- Project: background context if the role is tied to a specific project
 
 ### Markdown Format Rules
 
 The role file must use token-efficient markdown.
 
-Do not use:
-
-- Bold or italic formatting
-- Horizontal rules
-- Emojis
-- HTML comments
-- Image embeds
-- Multiple consecutive blank lines
-- Nested lists beyond 3 levels
-- Task lists
-- Heading depth beyond `###`
-
-Keep:
-
-- Headings for structure
-- Single blank lines between sections
-- Inline code for technical terms
-- Lists (ordered and unordered)
-- Callout prefixes (Note:, Warning:) without bold
+- Avoid: bold, italic, horizontal rules, emojis, HTML comments, image embeds, multiple consecutive blank lines, nested lists beyond 3 levels, task lists, heading depth beyond `###`
+- Use: headings, single blank lines between sections, inline code for technical terms, ordered and unordered lists, callout prefixes (Note:, Warning:) without bold
 
 ## Step 4: Write the File
 
@@ -136,5 +149,3 @@ mkdir -p .ai/roles
 ```
 
 Write the generated content to `.ai/roles/default.md`.
-
-If `.ai/roles/default.md` already exists, read it first. If the existing content is substantively different, inform the user before overwriting.

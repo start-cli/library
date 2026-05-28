@@ -528,13 +528,13 @@ tasks: {
 	}
 	"start/module/role/create": {
 		module:      "github.com/start-cli/library/tasks/start/module/role/create@v1"
-		version:     "v1.1.0"
+		version:     "v1.2.0"
 		description: "Create a new role in the library repository"
 		tags: ["library", "role", "create", "cue", "interactive"]
 	}
 	"start/module/role/update": {
 		module:      "github.com/start-cli/library/tasks/start/module/role/update@v1"
-		version:     "v1.0.0"
+		version:     "v1.1.0"
 		description: "Update an existing role in the library repository"
 		tags: ["library", "role", "update", "cue", "interactive"]
 	}
@@ -588,7 +588,7 @@ tasks: {
 	}
 	"cwd/dotai/role/create": {
 		module:      "github.com/start-cli/library/tasks/cwd/dotai/role/create@v1"
-		version:     "v1.0.0"
+		version:     "v1.1.0"
 		description: "Create a new system prompt (role) for AI agent use"
 		tags: ["dotai", "cwd", "role", "system-prompt", "ai"]
 	}

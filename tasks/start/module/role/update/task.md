@@ -8,6 +8,10 @@ Update an existing role in the library repository. This is primarily a design an
 - Write access to the library repository
 - CUE CLI installed (`cue version`)
 
+## Preconditions
+
+Before starting, verify the role actually exists at `roles/<path>/`. If the target directories are missing, this task is the wrong one — direct the user to `start/module/role/create` to author a new role.
+
 ## Process
 
 Steps:
@@ -68,6 +72,12 @@ Apply the agreed changes to the affected role files.
 
 Update only the sections that are changing. Do not rewrite sections that are not affected.
 
+When adding new content (instructions, identity bullets, restrictions), follow the authoring rules from `start/module/role/create` — in particular the required Instructions directives (style, quality, comment discipline) and the Restrictions guidance (intrinsic role constraints, not task directives). To view the create task content, run:
+
+```bash
+start get start/module/role/create
+```
+
 If the change affects all three modes, apply consistently across agent, assistant, and teacher, respecting the mode-specific tone of each.
 
 ## Step 6: Validate
@@ -78,6 +88,7 @@ Run validation from each affected mode directory:
 cd roles/<path>/<mode>
 cue mod tidy
 cue vet role.cue
+cue export role.cue
 ```
 
 Repeat for each affected mode.
@@ -87,8 +98,8 @@ Repeat for each affected mode.
 Determine the next patch version for each affected mode and the index:
 
 ```bash
-# Check latest tags for affected modes
-git ls-remote --tags origin | grep "refs/tags/roles/<path>/" | sort -t/ -k<n> -V | tail -1
+# Check latest tags for affected modes (path-depth-agnostic)
+git ls-remote --tags origin "refs/tags/roles/<path>/*" | sed 's|.*/||' | sort -V | tail -1
 
 # Check latest index tag
 git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1

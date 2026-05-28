@@ -19,6 +19,10 @@ Requirements:
 - CUE CLI installed (`cue version`)
 - Understanding of the domain the role covers
 
+## Preconditions
+
+Before starting, verify the role does not already exist. Check whether `roles/<domain>/[specialisation/]agent`, `.../assistant`, or `.../teacher` directories are present. If any exist, this task is the wrong one — direct the user to `start/module/role/update` to modify an existing role.
+
 ## Role Creation Process
 
 Steps:
@@ -58,10 +62,11 @@ Source: Expert in HashiCorp Terraform for cloud infrastructure provisioning and 
 Before creating any files, discuss and agree on the following with the user:
 
 - Domain and specialisation — confirm the path is correct and follows naming conventions
-- Three-mode approach — confirm whether all three modes (agent, assistant, teacher) are needed
 - Role identity — what makes this role distinctive; key skills and mindset
 - Content source — whether to adapt an existing document or draft from scratch
 - Style word — which style word best fits the domain (creativity, conciseness, precision, depth, elegance, performance)
+
+This task always produces all three modes (agent, assistant, teacher). Mode selection is not optional.
 
 Do not proceed to file creation until the design is agreed.
 
@@ -97,51 +102,29 @@ roles/<domain>/[specialisation/]
     └── role.md
 ```
 
-## Step 3: Create role.cue for Each Mode
+## Step 4: Create role.cue for Each Mode
 
-Create three role.cue files. The only differences are the package name, description suffix, and tags.
-
-Agent (`agent/role.cue`):
+Each mode's `role.cue` uses this template, varying only by mode:
 
 ```cue
-package agent
+package <mode>
 
 import "github.com/start-cli/library/schemas@v1"
 
 role: schemas.#Role & {
-	description: "<description-base> - autonomous agent mode"
-	tags: ["<domain>", "<topic-tags>", "agent", "autonomous"]
+	description: "<description-base> - <suffix>"
+	tags: ["<domain>", "<topic-tags>", <mode-tags>]
 	file: "@module/role.md"
 }
 ```
 
-Assistant (`assistant/role.cue`):
+Mode-specific values:
 
-```cue
-package assistant
-
-import "github.com/start-cli/library/schemas@v1"
-
-role: schemas.#Role & {
-	description: "<description-base> - collaborative assistant mode"
-	tags: ["<domain>", "<topic-tags>", "assistant", "collaborative"]
-	file: "@module/role.md"
-}
-```
-
-Teacher (`teacher/role.cue`):
-
-```cue
-package teacher
-
-import "github.com/start-cli/library/schemas@v1"
-
-role: schemas.#Role & {
-	description: "<description-base> - instructional teacher mode"
-	tags: ["<domain>", "<topic-tags>", "teacher", "instructional", "learning"]
-	file: "@module/role.md"
-}
-```
+| Mode | Package | Suffix | Mode tags |
+| --- | --- | --- | --- |
+| agent | `agent` | `autonomous agent mode` | `"agent", "autonomous"` |
+| assistant | `assistant` | `collaborative assistant mode` | `"assistant", "collaborative"` |
+| teacher | `teacher` | `instructional teacher mode` | `"teacher", "instructional", "learning"` |
 
 Notes:
 
@@ -149,7 +132,7 @@ Notes:
 - Tags use kebab-case and include the domain plus mode-relevant keywords
 - The `@module/` prefix resolves to the role's directory at runtime
 
-## Step 4: Create role.md for Each Mode
+## Step 5: Create role.md for Each Mode
 
 Write the role.md content for each mode. Use the Role Prompt Guide below to generate each role.md, applying the mode-specific adjustments described after it.
 
@@ -167,6 +150,9 @@ Use this guide to craft the content for each role.md file:
   - Add this line: "Prioritise <chosen-style> in your responses"
 - In the Instructions section, include a quality directive:
   - Add this line: "Bias your work toward the principled long-term solution that reduces maintenance and improves quality. Do not default to the smallest-diff fix."
+- In the Instructions section, include a comment discipline directive:
+  - Add this line: "Default to writing no comments. Add a comment only when the WHY is non-obvious — a hidden constraint, invariant, intentional tradeoff, or surprising behaviour — and keep it to one short line."
+  - Add this line: "Never restate what code does in comments. Never leave task, PR, ticket, or conversation references. Never leave bare TODOs without an owner or tracker."
 
 Restrictions:
 
@@ -192,14 +178,19 @@ Optional sections (include only if they add meaningful context):
 Format rules:
 
 - Avoid periods at the end of list items
-- Identity bullets should go beyond restating the role title -- convey the mindset, approach, and distinctive qualities that make the role effective
+- Identity bullets should go beyond restating the role title — convey the mindset, approach, and distinctive qualities that make the role effective
 - The Skill Set should be specific to the role; each skill should be directly relevant and meaningful for the topic
-- Tailor the identity bullets and skill set to the nature of the role:
-  - Technical: emphasise problem-solving, debugging, algorithmic thinking, attention to detail
-  - Creative: emphasise originality, ideation, audience awareness, and aesthetic judgment
-  - Analytical: emphasise critical thinking, pattern recognition, data interpretation, and synthesis
-  - Communication: emphasise clarity, tone, empathy, and precision
-  - Domain Expert: emphasise deep knowledge, accuracy, and current awareness of the field
+- Restrictions are intrinsic role constraints, not task instructions — keep task-level directives out of the Restrictions section
+
+Tailor the identity bullets and skill set to the nature of the role:
+
+| Role nature | Emphasise |
+| --- | --- |
+| Technical | problem-solving, debugging, algorithmic thinking, attention to detail |
+| Creative | originality, ideation, audience awareness, aesthetic judgment |
+| Analytical | critical thinking, pattern recognition, data interpretation, synthesis |
+| Communication | clarity, tone, empathy, precision |
+| Domain Expert | deep knowledge, accuracy, current awareness of the field |
 
 Output template:
 
@@ -231,8 +222,8 @@ Agent mode:
 - Title suffix: "- Autonomous Agent"
 - Identity bullets: emphasise autonomy, initiative, independent decision-making
 - Instructions tone: operate autonomously, make informed decisions, act without asking, communicate concisely about actions taken
-- Add: "Operate autonomously with minimal need for user confirmation"
-- Add: "Proactively identify and resolve potential issues"
+- Add this line: "Operate autonomously with minimal need for user confirmation"
+- Add this line: "Proactively identify and resolve potential issues"
 - Restrictions: add "Make reasonable assumptions when details are not specified, documenting them clearly"
 
 Assistant mode:
@@ -240,17 +231,17 @@ Assistant mode:
 - Title: no suffix (this is the default mode)
 - Identity bullets: emphasise collaboration, debugging skill, creative problem-solving
 - Instructions tone: collaborative, friendly, interactive, clarify requirements, work alongside the user
-- Add: "Be a helpful assistant who clarifies requirements, designs, implements, tests, and deploys perfect solutions"
-- Add: "Communicate in a friendly manner"
+- Add this line: "Be a helpful assistant who clarifies requirements, designs, implements, tests, and deploys perfect solutions"
+- Add this line: "Communicate in a friendly manner"
 
 Teacher mode:
 
 - Title suffix: "- Teacher"
 - Identity bullets: emphasise teaching passion, clear explanation, patience
 - Instructions tone: educational, patient, thorough explanations, build understanding
-- Add: "Be a patient teacher who explains concepts thoroughly and checks for understanding"
-- Add: "Focus on building understanding, not just providing solutions"
-- Restrictions: add "Don't assume prior knowledge - explain foundational concepts when needed"
+- Add this line: "Be a patient teacher who explains concepts thoroughly and checks for understanding"
+- Add this line: "Focus on building understanding, not just providing solutions"
+- Restrictions: add "Don't assume prior knowledge — explain foundational concepts when needed"
 
 ### Content Consistency
 
@@ -266,7 +257,7 @@ They differ in:
 - Instructions section (mode-specific behavioural guidelines)
 - Additional restrictions specific to the mode
 
-## Step 5: Create cue.mod/module.cue for Each Mode
+## Step 6: Create cue.mod/module.cue for Each Mode
 
 Create a module definition for each mode:
 
@@ -287,7 +278,7 @@ deps: {
 
 Replace `<domain>`, `[specialisation/]`, and `<mode>` with the actual values. Create one for each of the three modes: agent, assistant, teacher.
 
-## Step 6: Validate with CUE Tools
+## Step 7: Validate with CUE Tools
 
 Run validation from each mode directory:
 
@@ -383,5 +374,5 @@ Important: The CUE registry has tag immutability. Always check the latest remote
 If a GitHub issue exists for this role, close it:
 
 ```bash
-gh issue close <issue-number> --repo start-cli/library --comment "Implemented as roles/${DOMAIN}/${SPEC}@${VERSION}"
+gh issue close <issue-number> --repo start-cli/library --comment "Implemented as roles/${DOMAIN}/${SPEC}{agent,assistant,teacher}@${VERSION}"
 ```
