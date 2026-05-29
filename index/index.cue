@@ -606,7 +606,7 @@ tasks: {
 	}
 	"cwd/project/begin": {
 		module:      "github.com/start-cli/library/tasks/cwd/project/begin@v1"
-		version:     "v1.0.0"
+		version:     "v1.1.0"
 		description: "Begin working on the current project with full context"
 		tags: ["cwd", "project", "begin", "implementation", "active", "current"]
 	}
