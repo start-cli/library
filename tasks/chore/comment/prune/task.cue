@@ -1,0 +1,20 @@
+package prune
+
+import "github.com/start-cli/library/schemas@v1"
+
+task: schemas.#Task & {
+	description: "Prune comment bloat from source files, compressing real WHY and harvesting markers"
+	tags: ["chore", "comment", "prune", "code-quality", "cleanup"]
+	file: "@module/task.md"
+	prompt: """
+		Read {{.file}} to understand your task.
+
+		The current datetime is {{.datetime}}.
+		{{if .instructions}}
+
+		## Custom Instructions
+
+		{{.instructions}}
+		{{end}}
+		"""
+}

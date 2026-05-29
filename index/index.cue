@@ -658,4 +658,10 @@ tasks: {
 		description: "Summarise git commits for a period and post as a human-readable Jira item comment"
 		tags: ["jira", "item", "comment", "git", "commits", "summary"]
 	}
+	"chore/comment/prune": {
+		module:      "github.com/start-cli/library/tasks/chore/comment/prune@v1"
+		version:     "v1.0.0"
+		description: "Prune comment bloat from source files, compressing real WHY and harvesting markers"
+		tags: ["chore", "comment", "prune", "code-quality", "cleanup"]
+	}
 }
