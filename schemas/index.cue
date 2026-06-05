@@ -38,7 +38,7 @@ package schemas
 	roles?: [string]: #IndexEntry
 
 	// contexts maps "category/name" to module info
-	// Examples: "cwd/agents-md", "cwd/dotai/workspace"
+	// Examples: "cwd/agents-md", "cwd/dotagents/workspace"
 	contexts?: [string]: #IndexEntry
 
 	// tasks maps "category/name" to module info

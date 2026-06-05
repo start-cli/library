@@ -87,7 +87,7 @@ markdown/low-token/teacher
 start/library/agent
 ```
 
-Exception: file-based roles under `cwd/` and `home/` may use alternative final segments such as `default` or a filename reference (e.g., `cwd/role-md`, `cwd/dotai/default`) where no mode applies.
+Exception: file-based roles under `cwd/` and `home/` may use alternative final segments such as `default` or a filename reference (e.g., `cwd/role-md`, `cwd/dotagents/default`) where no mode applies.
 
 ## Contexts
 
@@ -103,7 +103,7 @@ Examples:
 
 ```
 cwd/agents-md
-home/dotai/environment
+home/dotagents/environment
 tools/webctl/reference
 ```
 
@@ -130,7 +130,7 @@ jira/item/read
 jira/item/research
 confluence/doc/read
 gitlab/pipeline/review
-cwd/dotai/role/create
+cwd/dotagents/role/create
 start/library/module/create
 ```
 
@@ -148,7 +148,7 @@ Examples:
 ```
 cwd/agents-md           (context — reads AGENTS.md from the working directory)
 cwd/readme/create       (task — operates on README.md in the working directory)
-home/dotai/environment  (context — reads ~/.ai/environment.md)
+home/dotagents/environment  (context — reads ~/.agents/environment.md)
 ```
 
 ## Tags

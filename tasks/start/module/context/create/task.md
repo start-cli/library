@@ -7,7 +7,7 @@ Create a new context definition in the library repository. This is an interactiv
 Confirm these values with the user before starting:
 
 - Domain: The scope or subject area (e.g., `cwd`, `home`, `tools`)
-- Specialisation: Optional narrowing segment (e.g., `dotai`)
+- Specialisation: Optional narrowing segment (e.g., `dotagents`)
 - Noun: The thing being provided as context (e.g., `environment`, `agents-md`, `reference`)
 - Description: Brief description of what context is provided
 - Selection Behaviour: How the context is included (required, default, or tag-based)
@@ -37,7 +37,7 @@ Steps:
 Ask the user for:
 
 1. Domain - kebab-case scope (e.g., `cwd`, `home`, `tools`)
-2. Specialisation - optional narrowing segment (e.g., `dotai`). Omit if not needed
+2. Specialisation - optional narrowing segment (e.g., `dotagents`). Omit if not needed
 3. Noun - the thing being provided (e.g., `environment`, `project`, `reference`)
 4. Description - one-line summary of the context
 5. Selection behaviour:
@@ -56,12 +56,12 @@ Example values:
 
 ```
 Domain: cwd
-Specialisation: dotai
+Specialisation: dotagents
 Noun: environment
-Description: Project-specific environment context from .ai/environment.md
+Description: Project-specific environment context from .agents/environment.md
 Selection: required, default
-Content source: file .ai/environment.md
-Tags: dotai, cwd, environment, project
+Content source: file .agents/environment.md
+Tags: dotagents, cwd, environment, project
 ```
 
 ## Step 2: Design the Context

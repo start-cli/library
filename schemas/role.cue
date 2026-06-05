@@ -16,8 +16,8 @@ package schemas
 	#UTD
 
 	// Whether this role can be skipped if its file is missing.
-	// Optional roles are discovery-based (e.g., dotai roles that look for
-	// .ai/roles/default.md). When file is missing:
+	// Optional roles are discovery-based (e.g., dotagents roles that look for
+	// .agents/roles/default.md). When file is missing:
 	// - optional: true → skip, try next role in definition order
 	// - optional: false → error, stop execution
 	// Explicit --role flag always errors on failure.

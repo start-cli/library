@@ -64,10 +64,10 @@ index: #Index & {
 			version: "v0.1.0"
 		}
 
-		"cwd/dotai/workspace": {
-			module:      "github.com/start-cli/library/contexts/cwd/dotai/workspace@v0"
-			description: "Workspace context from the project's .ai/ directory"
-			tags: ["cwd", "dotai", "workspace"]
+		"cwd/dotagents/workspace": {
+			module:      "github.com/start-cli/library/contexts/cwd/dotagents/workspace@v0"
+			description: "Workspace context from the project's .agents/ directory"
+			tags: ["cwd", "dotagents", "workspace"]
 			version: "v0.1.0"
 		}
 	}

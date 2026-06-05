@@ -24,7 +24,7 @@ tasks/<domain>/<name>/
 
 - [cwd/agents-md/create](cwd/agents-md/create/) - Create `AGENTS.md`
 - [cwd/agents-md/update](cwd/agents-md/update/) - Update `AGENTS.md`
-- [cwd/dotai/role/create](cwd/dotai/role/create/) - Create a role file under `./.ai/`
+- [cwd/dotagents/role/create](cwd/dotagents/role/create/) - Create a role file under `./.agents/`
 - [cwd/project/begin](cwd/project/begin/) - Resume an in-progress project document
 - [cwd/project/create](cwd/project/create/) - Create a project document
 - [cwd/project/review](cwd/project/review/) - Review a project document

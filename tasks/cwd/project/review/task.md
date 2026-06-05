@@ -13,7 +13,7 @@ Finding no new issues is a valid outcome. If the project document is complete an
 1. Find the project document. Look for clues in:
    - `AGENTS.md` — check for any reference to a current or active project
    - Common filenames at the repo root: `project.md`, `spec.md`, `plan.md`, `*.md`
-   - Agent directories: `.ai/`, `.agents/`, `.claude/`, `.cursor/`, `.gemini/`, or similar
+   - Agent directories: `.agents/`, `.claude/`, `.cursor/`, `.gemini/`, or similar
    - Documentation folders: `docs/`
 
    The project may be described as "active", "current", "in progress", "working on", or similar terms. If multiple candidates are found, ask the user to confirm. If none are found, ask the user where it is located.

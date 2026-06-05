@@ -19,8 +19,8 @@ Before creating a new project, check whether there is already a current or activ
 Look for clues in:
 
 - `AGENTS.md` — check for any reference to a current or active project
-- Common filenames at the repo root: `project.md`, `spec.md`, `ROADMAP.md`
-- Agent directories: `.ai/`, `.agents/`, `.claude/`, `.cursor/`, `.gemini/`, or others
+- Common filenames at the repo root: `project.md`, `spec.md`, `ROADMAP.md`, other markdown or document files
+- Agent directories: `.agents/`, `.claude/`, `.cursor/`, `.gemini/`, or others
 - Documentation folders: `docs/`
 
 If an active project is found, inform the user and confirm they want to create a new one before continuing.
@@ -30,9 +30,8 @@ If an active project is found, inform the user and confirm they want to create a
 Check for existing project documents to determine the next number:
 
 - Look in the locations identified in Step 1
-- If projects use a numbered format (e.g., `p-001`, `p-002`), use the next number in sequence
-- If no numbered projects exist, start with `p-001`
-- If no numbering convention is found, omit the number and use a descriptive name only
+- If projects use a numbered format (e.g., `01`, `02`), use the next number in sequence
+- If no numbered projects exist, start with `01`
 
 ## Step 3: Gather Requirements
 
@@ -57,7 +56,7 @@ Optional sections to ask about if relevant:
 Create the project file using this structure:
 
 ```
-# P-NNN: Title
+# NN: Title
 
 - Status: Pending
 - Started:
@@ -92,7 +91,7 @@ Out of Scope:
 
 Add optional sections as needed based on gathered requirements.
 
-File naming: `p-NNN-category-title.md` — lowercase kebab-case, placed in the same directory as other project documents, or `.ai/projects/` if no convention is established.
+File naming: `NN-title.md` — lowercase kebab-case, placed in the same directory as other project documents, or in the repository root if no convention is established.
 
 Writing rules:
 
@@ -102,8 +101,6 @@ Writing rules:
 - Keep goals specific and achievable
 - Define clear scope boundaries
 
-## Step 5: Update the Project Index
+## Step 5: Update AGENTS.md
 
-If a project index exists (e.g., `.ai/projects/README.md`), add the new project entry. If no index exists, ask the user whether to create one.
-
-Update `AGENTS.md` to point to the new project document as the active project.
+If there is a project reference in `AGENTS.md`, update it with the new project document.

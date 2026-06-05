@@ -4,7 +4,7 @@ Update an existing context definition in the library repository. This is primari
 
 ## Prerequisites
 
-- The context path (e.g., `cwd/environment`, `cwd/dotai/environment`)
+- The context path (e.g., `cwd/environment`, `cwd/dotagents/environment`)
 - Write access to the library repository
 - CUE CLI installed (`cue version`)
 

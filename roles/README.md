@@ -23,7 +23,7 @@ roles/<domain>/<style>/
 
 ### cwd/ (current working directory)
 
-- [cwd/dotai/default](cwd/dotai/default/) - Default role derived from `./.ai/` workspace settings
+- [cwd/dotagents/default](cwd/dotagents/default/) - Default role derived from `./.agents/` workspace settings
 - [cwd/role-md](cwd/role-md/) - Role loaded from a local `role.md` file
 
 ### git/
@@ -46,7 +46,7 @@ roles/<domain>/<style>/
 
 ### home/ (user-home configuration)
 
-- [home/dotai/default](home/dotai/default/) - Default role derived from `~/.ai/` global settings
+- [home/dotagents/default](home/dotagents/default/) - Default role derived from `~/.agents/` global settings
 
 ### linux/endeavouros/
 

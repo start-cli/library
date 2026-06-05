@@ -160,17 +160,17 @@ roles: {
 		description: "library expert - educational teacher mode"
 		tags: ["library", "cue", "teacher", "educational"]
 	}
-	"home/dotai/default": {
-		module:      "github.com/start-cli/library/roles/home/dotai/default@v1"
+	"home/dotagents/default": {
+		module:      "github.com/start-cli/library/roles/home/dotagents/default@v1"
 		version:     "v1.0.0"
-		description: "User's global default role from ~/.ai/roles/default.md"
-		tags: ["dotai", "home", "global", "default"]
+		description: "User's global default role from ~/.agents/roles/default.md"
+		tags: ["dotagents", "home", "global", "default"]
 	}
-	"cwd/dotai/default": {
-		module:      "github.com/start-cli/library/roles/cwd/dotai/default@v1"
+	"cwd/dotagents/default": {
+		module:      "github.com/start-cli/library/roles/cwd/dotagents/default@v1"
 		version:     "v1.0.0"
-		description: "Project-specific default role from .ai/roles/default.md"
-		tags: ["dotai", "cwd", "project", "default"]
+		description: "Project-specific default role from .agents/roles/default.md"
+		tags: ["dotagents", "cwd", "project", "default"]
 	}
 	"cwd/role-md": {
 		module:      "github.com/start-cli/library/roles/cwd/role-md@v1"
@@ -286,35 +286,35 @@ contexts: {
 		description: "Project-specific documentation from project.md"
 		tags: ["project", "repository", "documentation", "cwd"]
 	}
-	"home/dotai/environment": {
-		module:      "github.com/start-cli/library/contexts/home/dotai/environment@v1"
+	"home/dotagents/environment": {
+		module:      "github.com/start-cli/library/contexts/home/dotagents/environment@v1"
 		version:     "v1.0.0"
 		description: "Local environment information including user, system, and tool context"
-		tags: ["dotai", "home", "environment", "system", "user"]
+		tags: ["dotagents", "home", "environment", "system", "user"]
 	}
-	"home/dotai/workflow": {
-		module:      "github.com/start-cli/library/contexts/home/dotai/workflow@v1"
+	"home/dotagents/workflow": {
+		module:      "github.com/start-cli/library/contexts/home/dotagents/workflow@v1"
 		version:     "v1.0.0"
 		description: "Feature development workflow for Documentation Driven Development"
-		tags: ["dotai", "home", "workflow", "development"]
+		tags: ["dotagents", "home", "workflow", "development"]
 	}
-	"home/dotai/context/index": {
-		module:      "github.com/start-cli/library/contexts/home/dotai/context/index@v1"
+	"home/dotagents/context/index": {
+		module:      "github.com/start-cli/library/contexts/home/dotagents/context/index@v1"
 		version:     "v1.0.0"
-		description: "Index of curated reference material in ~/.ai/context/"
-		tags: ["dotai", "home", "context", "index", "reference"]
+		description: "Index of curated reference material in ~/.agents/context/"
+		tags: ["dotagents", "home", "context", "index", "reference"]
 	}
-	"cwd/dotai/context/index": {
-		module:      "github.com/start-cli/library/contexts/cwd/dotai/context/index@v1"
+	"cwd/dotagents/context/index": {
+		module:      "github.com/start-cli/library/contexts/cwd/dotagents/context/index@v1"
 		version:     "v1.0.0"
-		description: "Index of curated reference material in .ai/context/"
-		tags: ["dotai", "cwd", "context", "index", "reference"]
+		description: "Index of curated reference material in .agents/context/"
+		tags: ["dotagents", "cwd", "context", "index", "reference"]
 	}
-	"cwd/dotai/workspace": {
-		module:      "github.com/start-cli/library/contexts/cwd/dotai/workspace@v1"
+	"cwd/dotagents/workspace": {
+		module:      "github.com/start-cli/library/contexts/cwd/dotagents/workspace@v1"
 		version:     "v1.0.0"
-		description: "Workspace context from .ai/workspace.md"
-		tags: ["dotai", "cwd", "workspace"]
+		description: "Workspace context from .agents/workspace.md"
+		tags: ["dotagents", "cwd", "workspace"]
 	}
 	"cli/design": {
 		module:      "github.com/start-cli/library/contexts/cli/design@v1"
@@ -552,13 +552,13 @@ tasks: {
 	}
 	"start/module/context/create": {
 		module:      "github.com/start-cli/library/tasks/start/module/context/create@v1"
-		version:     "v1.0.0"
+		version:     "v1.1.0"
 		description: "Create a new context definition in the library repository"
 		tags: ["library", "context", "create", "cue", "interactive"]
 	}
 	"start/module/context/update": {
 		module:      "github.com/start-cli/library/tasks/start/module/context/update@v1"
-		version:     "v1.0.0"
+		version:     "v1.1.0"
 		description: "Update an existing context definition in the library repository"
 		tags: ["library", "context", "update", "cue", "interactive"]
 	}
@@ -586,27 +586,27 @@ tasks: {
 		description: "Update a repository AGENTS.md file for AI coding agents"
 		tags: ["agents-md", "cwd", "documentation", "markdown", "agents"]
 	}
-	"cwd/dotai/role/create": {
-		module:      "github.com/start-cli/library/tasks/cwd/dotai/role/create@v1"
-		version:     "v1.1.0"
+	"cwd/dotagents/role/create": {
+		module:      "github.com/start-cli/library/tasks/cwd/dotagents/role/create@v1"
+		version:     "v1.0.0"
 		description: "Create a new system prompt (role) for AI agent use"
-		tags: ["dotai", "cwd", "role", "system-prompt", "ai"]
+		tags: ["dotagents", "cwd", "role", "system-prompt", "ai"]
 	}
 	"cwd/project/create": {
 		module:      "github.com/start-cli/library/tasks/cwd/project/create@v1"
-		version:     "v1.0.0"
+		version:     "v1.1.0"
 		description: "Create a new project document"
 		tags: ["cwd", "project", "create", "planning", "active", "current"]
 	}
 	"cwd/project/review": {
 		module:      "github.com/start-cli/library/tasks/cwd/project/review@v1"
-		version:     "v1.2.0"
+		version:     "v1.3.0"
 		description: "Review the current project, surface open issues, and optionally resolve them"
 		tags: ["cwd", "project", "review", "preparation", "analysis", "active", "current", "design", "issues"]
 	}
 	"cwd/project/begin": {
 		module:      "github.com/start-cli/library/tasks/cwd/project/begin@v1"
-		version:     "v1.1.0"
+		version:     "v1.2.0"
 		description: "Begin working on the current project with full context"
 		tags: ["cwd", "project", "begin", "implementation", "active", "current"]
 	}

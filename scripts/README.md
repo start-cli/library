@@ -137,7 +137,7 @@ Arguments:
 
 Examples:
 
-  go run scripts/render-template.go contexts/home/dotai/environment
+  go run scripts/render-template.go contexts/home/dotagents/environment
   go run scripts/render-template.go tasks/golang/debug
   go run scripts/render-template.go roles/git/agent
 

@@ -24,11 +24,11 @@ contexts/<scope>/<name>/
 
 - [cwd/agents-md](cwd/agents-md/) - Repository-specific agent guidelines from `AGENTS.md`
 - [cwd/project](cwd/project/) - Project-specific documentation from `project.md`
-- [cwd/dotai/workspace](cwd/dotai/workspace/) - Workspace settings from `./.ai/`
-- [cwd/dotai/context/index](cwd/dotai/context/index/) - Index of curated reference material in `./.ai/context/`
+- [cwd/dotagents/workspace](cwd/dotagents/workspace/) - Workspace settings from `./.agents/`
+- [cwd/dotagents/context/index](cwd/dotagents/context/index/) - Index of curated reference material in `./.agents/context/`
 
 ### home/ (user-home configuration)
 
-- [home/dotai/environment](home/dotai/environment/) - Local environment information (user, system, tools)
-- [home/dotai/workflow](home/dotai/workflow/) - Feature-development workflow
-- [home/dotai/context/index](home/dotai/context/index/) - Index of curated reference material in `~/.ai/context/`
+- [home/dotagents/environment](home/dotagents/environment/) - Local environment information (user, system, tools)
+- [home/dotagents/workflow](home/dotagents/workflow/) - Feature-development workflow
+- [home/dotagents/context/index](home/dotagents/context/index/) - Index of curated reference material in `~/.agents/context/`
