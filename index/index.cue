@@ -328,6 +328,12 @@ contexts: {
 		description: "Go CLI design guide: architecture, patterns, and conventions for command-line tools"
 		tags: ["golang", "design", "cli", "go", "guide"]
 	}
+	"project/writing": {
+		module:      "github.com/start-cli/library/contexts/project/writing@v1"
+		version:     "v1.0.0"
+		description: "Guide for writing project documents that serve as the sole context for an implementer agent"
+		tags: ["project", "writing", "documentation", "guide", "agents"]
+	}
 }
 
 // Task index - maps friendly names to module paths
