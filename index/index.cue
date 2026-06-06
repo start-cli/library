@@ -334,6 +334,12 @@ contexts: {
 		description: "Guide for writing project documents that serve as the sole context for an implementer agent"
 		tags: ["project", "writing", "documentation", "guide", "agents"]
 	}
+	"project/implementation": {
+		module:      "github.com/start-cli/library/contexts/project/implementation@v1"
+		version:     "v1.0.0"
+		description: "Guide for implementing project documents received as the sole context for the work"
+		tags: ["project", "implementation", "implement", "implementing", "execution", "delivery", "documentation", "guide", "agents"]
+	}
 }
 
 // Task index - maps friendly names to module paths
