@@ -340,6 +340,12 @@ contexts: {
 		description: "Guide for implementing project documents received as the sole context for the work"
 		tags: ["project", "implementation", "implement", "implementing", "execution", "delivery", "documentation", "guide", "agents"]
 	}
+	"start/library/naming": {
+		module:      "github.com/start-cli/library/contexts/start/library/naming@v1"
+		version:     "v1.0.0"
+		description: "Naming conventions for all module types in the start-cli library"
+		tags: ["start", "library", "naming", "conventions", "standards", "modules", "guide"]
+	}
 }
 
 // Task index - maps friendly names to module paths

@@ -6,10 +6,10 @@ Naming conventions for all module types in the start-cli library.
 
 Every module has two related identifiers:
 
-- The **name** is what appears within a category, structured as one or more slash-separated segments (e.g. `claude/interactive`).
-- The **fully-qualified address** combines the category and the name with a colon: `category:name` (e.g. `agents:claude/interactive`). This is the canonical user-facing form for inputs and display.
+- The name is what appears within a category, structured as one or more slash-separated segments (e.g. `claude/interactive`).
+- The fully-qualified address combines the category and the name with a colon: `category:name` (e.g. `agents:claude/interactive`). This is the canonical user-facing form for inputs and display.
 
-This document describes the structure of the **name** for each category. Examples below are bare names; the fully-qualified address is the same string prefixed with `<category>:`.
+This document describes the structure of the name for each category. Examples below are bare names; the fully-qualified address is the same string prefixed with `<category>:`.
 
 ## Common Rules
 
@@ -41,8 +41,6 @@ import (
     tsk "github.com/start-cli/library/tasks/review/git-diff@v1:gitdiff"
 )
 ```
-
-This rule applies to new modules and to any republish at the next major version. The v1 modules `agents/{claude,copilot,gemini}/{bypass-permissions,non-interactive}` use the legacy underscore form (`bypass_permissions`, `non_interactive`); they remain on v1 for compatibility and convert to the stripped form at v2.
 
 ## Agents
 
@@ -104,7 +102,7 @@ Examples:
 ```
 cwd/agents-md
 home/dotagents/environment
-tools/webctl/reference
+golang/design/cli
 ```
 
 ## Tasks
@@ -131,7 +129,7 @@ jira/item/research
 confluence/doc/read
 gitlab/pipeline/review
 cwd/dotagents/role/create
-start/library/module/create
+start/module/context/create
 ```
 
 ## Reserved Domains

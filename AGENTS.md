@@ -132,7 +132,7 @@ scripts/validate-index
 
 ## References
 
-- Naming standards: docs/naming-standards.md
+- Naming standards: contexts/start/library/naming/context.md
 - Agent patterns: docs/agent-patterns.md
 - Role patterns: docs/role-patterns.md
 - Schema reference: schemas/README.md
