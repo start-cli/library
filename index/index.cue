@@ -342,7 +342,7 @@ contexts: {
 	}
 	"start/library/naming": {
 		module:      "github.com/start-cli/library/contexts/start/library/naming@v1"
-		version:     "v1.0.0"
+		version:     "v1.0.1"
 		description: "Naming conventions for all module types in the start-cli library"
 		tags: ["start", "library", "naming", "conventions", "standards", "modules", "guide"]
 	}
