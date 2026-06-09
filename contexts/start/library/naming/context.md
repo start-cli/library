@@ -18,6 +18,29 @@ This document describes the structure of the name for each category. Examples be
 - The name reads broad to specific, left to right
 - Use only the segments needed for clarity
 - Each segment of the name maps to a directory in the repository
+- No name may be an ancestor of another name in the same category — every module is a leaf (see Leaf-Only Names)
+
+## Leaf-Only Names
+
+Within a category, a name must not be a proper prefix of another name when both are split on `/`. Put differently: no name may be an ancestor of another. Every module occupies a leaf position in its category's name tree, and an intermediate path node is never itself a module.
+
+The per-category patterns below tend to produce leaf names on their own: each ends in a terminal segment — agent variant, role mode, context noun, task action — that an intermediate node does not carry. Contexts (`domain/[specialisation/]noun`) are the most prone to violation, because a noun can also read as a specialisation:
+
+Wrong:
+
+```
+golang/design        (noun "design")
+golang/design/cli    ("design" reused as specialisation)
+```
+
+`golang/design` is an ancestor of `golang/design/cli`, so the bare name `golang/design` can never be addressed without also matching its descendant. Give the broader module its own terminal noun so both are leaves:
+
+```
+golang/design/overview
+golang/design/cli
+```
+
+This is a string-segment rule, not a substring rule: `jira/item/read` and `jira/item/read-only` are both valid leaves because `read` is not a whole-segment prefix of `read-only`. The registry index is validated to reject ancestor collisions, and `start doctor validate` reports them.
 
 ## CUE Package Names
 
@@ -68,7 +91,7 @@ gemini/bypass-permissions
 
 Pattern: `domain/[specialisation/]mode`
 
-Mode is always the final segment: `agent`, `assistant`, or `teacher`.
+Mode is the final segment. Normally it is one of `agent`, `assistant`, or `teacher`.
 
 | Segment | Required | Purpose |
 |---------|----------|---------|
@@ -154,7 +177,7 @@ home/dotagents/environment  (context — reads ~/.agents/environment.md)
 Tags are used for search and discovery. Follow these conventions:
 
 - Use kebab-case
-- Include the path segments as tags (domain, specialisation, noun)
+- Include each path segment as a tag, whatever the category's segments are
 - Add relevant technology or keyword terms beyond the path
 
 Example for `jira/item/backlog/review`:
@@ -173,6 +196,8 @@ Use `generate` when the task is analysis-driven and state-agnostic:
 - The agent analyses context and produces or updates the target
 - The workflow is the same whether the target exists or not
 
+Other action verbs (`read`, `review`, `research`, `debug`, and so on) are free-form; choose the clearest verb for the action.
+
 ## Quick Reference
 
 | Category | Pattern | Required Segments |
@@ -181,3 +206,8 @@ Use `generate` when the task is analysis-driven and state-agnostic:
 | Roles | `domain/[specialisation/]mode` | domain, mode |
 | Contexts | `domain/[specialisation/]noun` | domain, noun |
 | Tasks | `[domain/][specialisation/][noun/]action` | action |
+
+Rules that apply across all categories:
+
+- Leaf-only: no name may be an ancestor of another within a category (see Leaf-Only Names).
+- Reserved domains: `cwd` and `home` map to local filesystem paths (see Reserved Domains).
