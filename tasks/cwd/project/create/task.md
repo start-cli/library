@@ -1,18 +1,10 @@
 # Create Project Document
 
-Create a new project document following established conventions.
+Create a new project document following the project writing guide.
 
 ## Process
 
-Steps:
-
-1. Check for an existing active project
-2. Determine the next project number
-3. Gather requirements interactively
-4. Write the project document
-5. Update the project index
-
-## Step 1: Check for an Existing Active Project
+### Step 1: Check for an Existing Active Project
 
 Before creating a new project, check whether there is already a current or active project in progress.
 
@@ -25,82 +17,47 @@ Look for clues in:
 
 If an active project is found, inform the user and confirm they want to create a new one before continuing.
 
-## Step 2: Determine the Next Project Number
+### Step 2: Load the Writing Guide
 
-Check for existing project documents to determine the next number:
+Run the following command to load the project writing guide, which defines the canonical structure, sections, formatting, and principles for project documents:
 
-- Look in the locations identified in Step 1
-- If projects use a numbered format (e.g., `01`, `02`), use the next number in sequence
-- If no numbered projects exist, start with `01`
+```bash
+start get project/writing
+```
 
-## Step 3: Gather Requirements
+The guide is the single source of truth for how a project document is written. Follow it for the rest of this task.
+
+### Step 3: Gather Requirements
+
+The writing guide defines the document's sections. Gather the inputs only the user can provide, and investigate the rest from the repository.
 
 Ask the user about:
 
-- Project title and category
-- Overview: what the project accomplishes and why it exists
-- Goals: specific, measurable outcomes
-- Scope: what is included and excluded
-- Success criteria: how completion is measured
-- Deliverables: concrete outputs
+- Goal — what the project builds or changes, and why
+- Scope — what is in and explicitly out
+- Requirements — the concrete deliverables
+- Constraints — hard rules (language version, platforms, tooling, compatibility, standards)
+- Acceptance criteria — observable, verifiable signals of completion
+- Implementation guidance — any project-specific preferences worth recording
 
-Optional sections to ask about if relevant:
+Investigate rather than ask:
 
-- Dependencies on other projects
-- Technical approach
-- Research areas
-- Decision points requiring owner input
+- Current State — read the relevant existing files, configuration, and dependencies
+- References — record any sources consulted while drafting
+- Implementation Plan — draft the ordered steps from the requirements and current state
 
-## Step 4: Write the Project Document
+Right-size: omit any optional section that does not apply.
 
-Create the project file using this structure:
+### Step 4: Write the Project Document
 
-```
-# NN: Title
+Write the document following the structure, formatting, and principles defined by the writing guide loaded in Step 2.
 
-- Status: Pending
-- Started:
-- Completed:
+File placement:
 
-## Overview
+- If project documents using `NN-<stub>.md` numbering already exist in the repo, continue the sequence — name the new file with the next number.
+- If no project documents exist, name it `project.md`.
+- Place it in the repository root unless an extra instruction specifies a different location.
 
-Brief description of what this project accomplishes and why.
-
-## Goals
-
-1. First goal
-2. Second goal
-
-## Scope
-
-In Scope:
-- Item
-
-Out of Scope:
-- Item
-
-## Success Criteria
-
-- Measurable outcome
-- Testable condition
-
-## Deliverables
-
-- Concrete output
-```
-
-Add optional sections as needed based on gathered requirements.
-
-File naming: `NN-title.md` — lowercase kebab-case, placed in the same directory as other project documents, or in the repository root if no convention is established.
-
-Writing rules:
-
-- Do not use bold or italic formatting
-- Use section headers and lists for structure
-- Make success criteria measurable and testable
-- Keep goals specific and achievable
-- Define clear scope boundaries
-
-## Step 5: Update AGENTS.md
+### Step 5: Update AGENTS.md
 
 If there is a project reference in `AGENTS.md`, update it with the new project document.
