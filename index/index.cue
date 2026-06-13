@@ -336,7 +336,7 @@ contexts: {
 	}
 	"project/implementation": {
 		module:      "github.com/start-cli/library/contexts/project/implementation@v1"
-		version:     "v1.1.0"
+		version:     "v1.2.0"
 		description: "Guide for implementing project documents received as the sole context for the work"
 		tags: ["project", "implementation", "implement", "implementing", "execution", "delivery", "documentation", "guide", "agents"]
 	}
@@ -345,6 +345,12 @@ contexts: {
 		version:     "v1.0.1"
 		description: "Naming conventions for all module types in the start-cli library"
 		tags: ["start", "library", "naming", "conventions", "standards", "modules", "guide"]
+	}
+	"start/library/publishing": {
+		module:      "github.com/start-cli/library/contexts/start/library/publishing@v1"
+		version:     "v1.0.0"
+		description: "Canonical workflow for publishing library modules to the CUE Central Registry"
+		tags: ["start", "library", "publishing", "publish", "release", "registry", "workflow", "guide"]
 	}
 }
 
