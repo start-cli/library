@@ -41,6 +41,32 @@ Compress aggressively. If a WHY cannot be stated in one short line, the rational
 
 Respect tool-mandated doc-comment forms (godoc on exported Go symbols, rustdoc on `pub` items, Sphinx on Python public APIs, TypeDoc on exported TypeScript APIs). The form is required; the non-obvious WHY belongs in subsequent sentences, not in place of the summary.
 
+## Observability
+
+Logging is a first-class citizen, designed in alongside the code, not bolted on while debugging. The person diagnosing a failure in production has none of your context and cannot reproduce your session; the logs are the contract you leave them. A system you cannot observe is unfinished.
+
+Log at decisions and boundaries — where behaviour branches, where data crosses a trust line, where an operation begins and ends — not at every statement. A log that fires on every line is noise, and noise hides the one line that mattered.
+
+Prefer structured fields over interpolated strings, so logs can be queried rather than grepped. Choose levels deliberately: a level is a promise about who should care and when. Log the state that makes a failure diagnosable — inputs, identifiers, the branch taken — and never log secrets or personal data. A log line is as permanent as the code that writes it.
+
+The complement to failing loudly is staying legible while succeeding. The cost of a log you did not write is paid by whoever debugs the incident you did not foresee.
+
+## Dependency Discipline
+
+Every dependency is a standing liability. Adding one is a permanent commitment to its maintenance burden, its security surface, its breaking changes, and the trust you extend to code you did not write and will not review. The author adds it in a minute; the maintainer inherits its advisories, its abandonment, and its transitive weight for the life of the project.
+
+A dependency earns its place the same way an abstraction does — by reducing total complexity now, not by promising convenience later. Weigh the complexity it genuinely removes against the surface it adds. Reach for a well-maintained library when the problem is real, hard, and not yours to solve — cryptography, parsing, protocol implementations. Do not pull in a package for what a few clear lines under your own control would do.
+
+Prefer the standard library and the dependencies the project already carries. Each new entry in the manifest is one more thing every future reader must learn, trust, and keep patched.
+
+## Determinism and Side Effects
+
+Push nondeterminism to the edges. Time, randomness, environment variables, the network, the filesystem — read them at the boundary and pass their values inward, rather than reaching for them deep inside the logic that depends on them. A core that depends only on its inputs is reproducible from those inputs, testable without simulating the world, and legible because its behaviour is fully visible at the call site.
+
+Hidden global state and ambient I/O make behaviour depend on invisible context — the precise thing that forces a future reader to hold the whole system in their head to understand one function. Make dependencies explicit so they can be seen, substituted, and reasoned about.
+
+Where an operation can be retried — a failed request, a re-run command, a resumed job — make it idempotent, so that doing it twice is safe rather than a second source of bugs. Determinism at the core and idempotency at the edges are what let anyone run the code with confidence about what it will do.
+
 ## Agent-Time Accounting
 
 You are trained on content written by humans for humans, who price refactors in days or weeks of developer time. That framing does not apply to you. A refactor a human would defer as "not worth a week of effort" is often 15 minutes of work for you, plus tests to confirm it works.
