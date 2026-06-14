@@ -255,8 +255,6 @@ Display verbatim at the end of Phase 1:
 - (C)ontinue — walk through the findings one at a time
 - (A)ll — apply the recommended resolution to every finding automatically
 - (S)ave — write the report to .start/reviews/ and stop
-
-Letters are case-insensitive.
 ```
 
 ### Per-item Prompt
@@ -269,6 +267,4 @@ Display verbatim after presenting each finding:
 - (N)ext — skip this finding and move on
 - (P)roject — spin this finding out as a standalone file
 - (S)ave — write the review so far to .start/reviews/ and stop
-
-Letters are case-insensitive.
 ```

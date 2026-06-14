@@ -582,7 +582,7 @@ tasks: {
 	}
 	"cwd/project/review": {
 		module:      "github.com/start-cli/library/tasks/cwd/project/review@v1"
-		version:     "v1.4.0"
+		version:     "v1.4.1"
 		description: "Review the current project, surface open issues, and optionally resolve them"
 		tags: ["cwd", "project", "review", "preparation", "analysis", "active", "current", "design", "issues"]
 	}
