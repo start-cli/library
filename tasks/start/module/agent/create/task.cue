@@ -8,6 +8,7 @@ import (
 task: schemas.#Task & {
 	description: "Create a new agent definition in the library repository"
 	tags: ["library", "agent", "create", "cue", "interactive"]
+	uses: ["contexts:start/library/publishing"]
 	role: assistantRole.role
 	file: "@module/task.md"
 	prompt: """

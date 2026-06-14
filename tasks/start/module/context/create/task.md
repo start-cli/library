@@ -28,9 +28,7 @@ Steps:
 3. Create directory structure
 4. Create context.cue with schema definition
 5. Create cue.mod/module.cue with dependencies
-6. Validate with CUE tools
-7. Publish to CUE registry
-8. Close related GitHub issue (if applicable)
+6. Publish following the publishing workflow
 
 ## Step 1: Gather Prerequisites
 
@@ -239,80 +237,14 @@ deps: {
 
 Contexts only depend on the schemas module.
 
-## Step 6: Validate with CUE Tools
+## Step 6: Publish
 
-Run validation from the context directory:
+Before publishing, confirm the context is complete: at least one content field (`file`, `command`, or `prompt`) is present and resolves the intended output, and the selection behaviour (`required`, `default`, or tag-based) matches the design.
 
-```bash
-cd contexts/<domain>/[specialisation/]<noun>
-cue mod tidy
-cue vet context.cue
-cue export context.cue
-```
-
-Expected results:
-
-- `cue mod tidy` completes without errors
-- `cue vet context.cue` produces no output (valid)
-- `cue export context.cue` shows valid JSON with context definition
-
-If validation fails:
-
-- Check import paths match module.cue dependencies
-- Verify package name is a valid Go identifier
-- Ensure at least one content field (file, command, or prompt) is present
-- Check Go template placeholder syntax (`{{.name}}`)
-
-## Step 7: Publish to CUE Registry
-
-After validation passes, update the index and publish everything in one commit.
-
-Add an entry to `index/index.cue`:
-
-```cue
-"<domain>/[specialisation/]<noun>": {
-    module:      "github.com/start-cli/library/contexts/<domain>/[specialisation/]<noun>@v1"
-    version:     "v1.0.0"
-    description: "<description>"
-    tags: ["<domain>", "<tag1>", "<tag2>"]
-}
-```
-
-Then commit, tag, and publish:
+Then load the publishing workflow and follow it end to end:
 
 ```bash
-DOMAIN="<domain>"
-SPEC=""  # or "<specialisation>/"
-NOUN="<noun>"
-VERSION="v1.0.0"
-
-# Check latest remote index tag
-git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1
-INDEX_VERSION="<next version>"
-
-# Stage context files and index together — single commit
-git add contexts/${DOMAIN}/${SPEC}${NOUN}/
-git add index/index.cue
-git commit -m "feat(contexts): add ${DOMAIN}/${SPEC}${NOUN} context"
-git tag "contexts/${DOMAIN}/${SPEC}${NOUN}/${VERSION}"
-git tag "index/${INDEX_VERSION}"
-git push origin main
-git push origin "contexts/${DOMAIN}/${SPEC}${NOUN}/${VERSION}"
-git push origin "index/${INDEX_VERSION}"
-
-cd contexts/${DOMAIN}/${SPEC}${NOUN}
-cue mod publish ${VERSION}
-
-cd <repo-root>/index
-cue mod publish ${INDEX_VERSION}
+start get contexts:start/library/publishing
 ```
 
-Important: The CUE registry has tag immutability. Always check the latest remote tag with `git ls-remote` before tagging to avoid version conflicts.
-
-## Step 8: Close Related GitHub Issue
-
-If a GitHub issue exists for this context, close it:
-
-```bash
-gh issue close <issue-number> --repo start-cli/library --comment "Implemented as contexts/${DOMAIN}/${SPEC}${NOUN}@${VERSION}"
-```
+It is the single source for validation, version determination, the mandatory index update, the single module-plus-index commit, the tag pushes, the registry publish, verification, and closing any related GitHub issue. This is a create, so the module starts at v1.0.0.

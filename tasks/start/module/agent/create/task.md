@@ -31,9 +31,7 @@ Steps:
 3. Create directory structure
 4. Create agent.cue with schema definition
 5. Create cue.mod/module.cue with dependencies
-6. Validate with CUE tools
-7. Publish to CUE registry
-8. Close related GitHub issue (if applicable)
+6. Publish following the publishing workflow
 
 ## Step 1: Gather Prerequisites
 
@@ -195,80 +193,14 @@ deps: {
 
 Agents only depend on the schemas module (no role dependency).
 
-## Step 6: Validate with CUE Tools
+## Step 6: Publish
 
-Run validation from the agent directory:
+Before publishing, confirm the agent definition is complete: `command` is set with the placeholders the tool needs, `bin` is set for auto-detection, and any `default_model` names a key in `models`.
 
-```bash
-cd agents/<tool>/<variant>
-cue mod tidy
-cue vet agent.cue
-cue export agent.cue
-```
-
-Expected results:
-
-- `cue mod tidy` completes without errors
-- `cue vet agent.cue` produces no output (valid)
-- `cue export agent.cue` shows valid JSON with agent definition
-
-If validation fails:
-
-- Check import paths match module.cue dependencies
-- Verify package name is a valid Go identifier
-- Ensure all required fields are present (command is required)
-- Check command template placeholder syntax (`{{.name}}`)
-
-## Step 7: Publish to CUE Registry
-
-After validation passes, update the index and publish everything in one commit.
-
-Add an entry to `index/index.cue`. Agent index entries include a `bin` field:
-
-```cue
-"<tool>/<variant>": {
-    module:      "github.com/start-cli/library/agents/<tool>/<variant>@v1"
-    version:     "v1.0.0"
-    description: "<description>"
-    bin:         "<binary-name>"
-    tags: ["<tool>", "<tag1>", "<tag2>"]
-}
-```
-
-Then commit, tag, and publish:
+Then load the publishing workflow and follow it end to end:
 
 ```bash
-TOOL="<tool>"
-VARIANT="<variant>"
-VERSION="v1.0.0"
-
-# Check latest remote index tag
-git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1
-INDEX_VERSION="<next version>"
-
-# Stage agent files and index together — single commit
-git add agents/${TOOL}/${VARIANT}/
-git add index/index.cue
-git commit -m "feat(agents): add ${TOOL}/${VARIANT} agent"
-git tag "agents/${TOOL}/${VARIANT}/${VERSION}"
-git tag "index/${INDEX_VERSION}"
-git push origin main
-git push origin "agents/${TOOL}/${VARIANT}/${VERSION}"
-git push origin "index/${INDEX_VERSION}"
-
-cd agents/${TOOL}/${VARIANT}
-cue mod publish ${VERSION}
-
-cd <repo-root>/index
-cue mod publish ${INDEX_VERSION}
+start get contexts:start/library/publishing
 ```
 
-Important: The CUE registry has tag immutability. Always check the latest remote tag with `git ls-remote` before tagging to avoid version conflicts.
-
-## Step 8: Close Related GitHub Issue
-
-If a GitHub issue exists for this agent, close it:
-
-```bash
-gh issue close <issue-number> --repo start-cli/library --comment "Implemented as agents/${TOOL}/${VARIANT}@${VERSION}"
-```
+It is the single source for validation, version determination, the mandatory index update, the single module-plus-index commit, the tag pushes, the registry publish, verification, and closing any related GitHub issue. This is a create, so the module starts at v1.0.0.

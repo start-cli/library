@@ -22,7 +22,7 @@ If an active project is found, inform the user and confirm they want to create a
 Run the following command to load the project writing guide, which defines the canonical structure, sections, formatting, and principles for project documents:
 
 ```bash
-start get project/writing
+start get contexts:project/writing
 ```
 
 The guide is the single source of truth for how a project document is written. Follow it for the rest of this task.

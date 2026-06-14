@@ -17,9 +17,7 @@ Steps:
 3. Understand the problem
 4. Design the changes
 5. Implement the changes
-6. Validate
-7. Publish
-8. Close related GitHub issue (if applicable)
+6. Publish following the publishing workflow
 
 ## Step 1: Identify the Agent
 
@@ -68,57 +66,14 @@ Apply the agreed changes to `agent.cue`.
 
 Update only the fields that are changing.
 
-## Step 6: Validate
+## Step 6: Publish
 
-Run validation from the agent directory:
+Before publishing, confirm the agent definition is still complete after the change: `command` retains the placeholders the tool needs, `bin` is set for auto-detection, and any `default_model` names a key in `models`.
 
-```bash
-cd agents/<tool>/<variant>
-cue mod tidy
-cue vet agent.cue
-cue export agent.cue
-```
-
-Expected results:
-
-- `cue mod tidy` completes without errors
-- `cue vet agent.cue` produces no output (valid)
-- `cue export agent.cue` shows valid JSON with agent definition
-
-## Step 7: Publish
-
-Determine the next patch version for the agent and the index:
+Then load the publishing workflow and follow it end to end:
 
 ```bash
-git ls-remote --tags origin | grep "refs/tags/agents/<tool>/<variant>/" | sort -t/ -k<n> -V | tail -1
-git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1
+start get contexts:start/library/publishing
 ```
 
-Update the version in `index/index.cue` for the agent entry, then stage both in a single commit:
-
-```bash
-git add agents/<tool>/<variant>/
-git add index/index.cue
-git commit -m "fix(agents): update <tool>/<variant> agent"
-git tag "agents/<tool>/<variant>/${VERSION}"
-git tag "index/${INDEX_VERSION}"
-git push origin main
-git push origin "agents/<tool>/<variant>/${VERSION}"
-git push origin "index/${INDEX_VERSION}"
-
-cd agents/<tool>/<variant>
-cue mod publish ${VERSION}
-
-cd <repo-root>/index
-cue mod publish ${INDEX_VERSION}
-```
-
-Important: The CUE registry has tag immutability. Always check the latest remote tag with `git ls-remote` before tagging to avoid version conflicts.
-
-## Step 8: Close Related GitHub Issue
-
-If a GitHub issue exists for this update, close it:
-
-```bash
-gh issue close <issue-number> --repo start-cli/library --comment "Fixed in agents/<tool>/<variant>@${VERSION}"
-```
+It is the single source for validation, version determination, the mandatory index update, the single module-plus-index commit, the tag pushes, the registry publish, verification, and closing any related GitHub issue.
