@@ -54,7 +54,7 @@ Write the document following the structure, formatting, and principles defined b
 
 File placement:
 
-- If project documents using `NN-<stub>.md` numbering already exist in the repo, continue the sequence — name the new file with the next number.
+- If project documents using `NN-<slug>.md` numbering already exist in the repo, continue the sequence — name the new file with the next number.
 - If no project documents exist, name it `project.md`.
 - Place it in the repository root unless an extra instruction specifies a different location.
 

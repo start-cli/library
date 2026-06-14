@@ -181,13 +181,13 @@ When the report is saved after remediation begins, append the section below. Out
 |---|----------|---------|---------|
 | 1 | design | Brief description | Fixed |
 | 2 | decision | Brief description | Skipped |
-| 3 | gap | Brief description | Project: 01-project-add-rate-limiting.md |
+| 3 | gap | Brief description | Project: 01-add-rate-limiting.md |
 | 4 | risk | Brief description | Pending |
 ```
 
 ## Project File Format
 
-When `P` is selected during remediation, write a standalone file at the repository root named `NN-project-<slug>.md` where:
+When `P` is selected during remediation, write a standalone file at the repository root named `NN-<slug>.md` where:
 
 - `NN` starts at `01` and increments based on existing files matching the pattern
 - `<slug>` is the short title lowercased and hyphenated (e.g. "Race condition in token refresh" becomes `race-condition-in-token-refresh`)

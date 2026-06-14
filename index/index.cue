@@ -504,7 +504,7 @@ tasks: {
 	}
 	"review/pre-commit": {
 		module:      "github.com/start-cli/library/tasks/review/pre-commit@v1"
-		version:     "v1.3.0"
+		version:     "v1.4.0"
 		description: "Interactive pre-commit review that finds and fixes issues in git changes"
 		tags: ["review", "pre-commit", "fix", "code-changes", "code-quality"]
 	}
@@ -576,13 +576,13 @@ tasks: {
 	}
 	"cwd/project/create": {
 		module:      "github.com/start-cli/library/tasks/cwd/project/create@v1"
-		version:     "v1.3.0"
+		version:     "v1.4.0"
 		description: "Create a new project document"
 		tags: ["cwd", "project", "create", "planning", "active", "current"]
 	}
 	"cwd/project/review": {
 		module:      "github.com/start-cli/library/tasks/cwd/project/review@v1"
-		version:     "v1.3.0"
+		version:     "v1.4.0"
 		description: "Review the current project, surface open issues, and optionally resolve them"
 		tags: ["cwd", "project", "review", "preparation", "analysis", "active", "current", "design", "issues"]
 	}

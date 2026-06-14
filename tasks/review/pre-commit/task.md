@@ -296,13 +296,13 @@ When the report is saved after remediation begins, append the following section.
 |----|---------|---------|
 | C1 | Brief description | Fixed |
 | H1 | Brief description | Skipped |
-| M1 | Brief description | Project: 01-project-race-condition-in-token-refresh.md |
+| M1 | Brief description | Project: 01-race-condition-in-token-refresh.md |
 | L1 | Brief description | Pending |
 ```
 
 ## Project File Format
 
-When `P` is selected during remediation, write a standalone file at the repository root named `NN-project-<slug>.md` where:
+When `P` is selected during remediation, write a standalone file at the repository root named `NN-<slug>.md` where:
 
 - `NN` starts at `01` and increments based on existing files matching the pattern
 - `<title>` is the `<short title>` value from the presentation template used during remediation
