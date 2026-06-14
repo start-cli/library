@@ -196,6 +196,10 @@ Use `generate` when the task is analysis-driven and state-agnostic:
 - The agent analyses context and produces or updates the target
 - The workflow is the same whether the target exists or not
 
+Use a single combined verb such as `author` when one interactive module owns both create and update for its subject:
+- The module determines whether the target exists and follows the matching flow within itself
+- Prefer this when create and update share most of their design and differ only in whether the target already exists, so the create/update pair would be near-duplicates
+
 Other action verbs (`read`, `review`, `research`, `debug`, and so on) are free-form; choose the clearest verb for the action.
 
 ## Quick Reference
