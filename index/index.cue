@@ -504,7 +504,7 @@ tasks: {
 	}
 	"review/pre-commit": {
 		module:      "github.com/start-cli/library/tasks/review/pre-commit@v1"
-		version:     "v1.4.0"
+		version:     "v1.4.1"
 		description: "Interactive pre-commit review that finds and fixes issues in git changes"
 		tags: ["review", "pre-commit", "fix", "code-changes", "code-quality"]
 	}
