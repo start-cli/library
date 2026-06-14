@@ -24,7 +24,7 @@ If no project document is found, ask the user where it is located.
 Run the following command to load the implementation guide and follow it:
 
 ```bash
-start get project/implementation
+start get contexts:project/implementation
 ```
 
 The guide defines the full implementation workflow — Orient, Implement, Verify, Report — and how to surface gaps discovered mid-implementation. Orient against the located project document, then work its Implementation Plan through that workflow, asking the user for input only when genuinely blocked.

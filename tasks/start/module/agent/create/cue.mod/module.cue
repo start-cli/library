@@ -10,6 +10,6 @@ deps: {
 		v: "v1.0.0"
 	}
 	"github.com/start-cli/library/schemas@v1": {
-		v: "v1.0.0"
+		v: "v1.1.0"
 	}
 }

@@ -33,9 +33,7 @@ Steps:
 4. Create role.cue for each mode
 5. Create role.md for each mode using the Role Prompt Guide
 6. Create cue.mod/module.cue for each mode
-7. Validate with CUE tools
-8. Publish to CUE registry
-9. Close related GitHub issue (if applicable)
+7. Publish following the publishing workflow
 
 ## Step 1: Gather Prerequisites
 
@@ -278,101 +276,14 @@ deps: {
 
 Replace `<domain>`, `[specialisation/]`, and `<mode>` with the actual values. Create one for each of the three modes: agent, assistant, teacher.
 
-## Step 7: Validate with CUE Tools
+## Step 7: Publish
 
-Run validation from each mode directory:
+Before publishing, confirm the role is complete: all three modes (agent, assistant, teacher) are authored, the shared Skill Set and base Restrictions are consistent across the three, and each mode's `role.cue` and `role.md` are present.
 
-```bash
-# Repeat for each mode: agent, assistant, teacher
-cd roles/<domain>/[specialisation/]<mode>
-cue mod tidy
-cue vet role.cue
-cue export role.cue
-```
-
-Expected results:
-
-- `cue mod tidy` completes without errors
-- `cue vet role.cue` produces no output (valid)
-- `cue export role.cue` shows valid JSON with role definition
-
-If validation fails:
-
-- Check import paths match module.cue dependencies
-- Verify package name matches the directory name
-- Ensure all required fields are present
-- Check for syntax errors in CUE files
-
-## Step 8: Publish to CUE Registry
-
-After validation passes, update the index and publish everything in one commit.
-
-Add three entries to `index/index.cue`:
-
-```cue
-"<domain>/[specialisation/]agent": {
-    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]agent@v1"
-    version:     "v1.0.0"
-    description: "<description-base> - autonomous agent mode"
-    tags: ["<domain>", "<topic-tags>", "agent", "autonomous"]
-}
-"<domain>/[specialisation/]assistant": {
-    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]assistant@v1"
-    version:     "v1.0.0"
-    description: "<description-base> - collaborative assistant mode"
-    tags: ["<domain>", "<topic-tags>", "assistant", "collaborative"]
-}
-"<domain>/[specialisation/]teacher": {
-    module:      "github.com/start-cli/library/roles/<domain>/[specialisation/]teacher@v1"
-    version:     "v1.0.0"
-    description: "<description-base> - instructional teacher mode"
-    tags: ["<domain>", "<topic-tags>", "teacher", "instructional", "learning"]
-}
-```
-
-Then commit, tag, and publish:
+Then load the publishing workflow and follow it end to end:
 
 ```bash
-DOMAIN="<domain>"
-SPEC=""  # or "<specialisation>/"
-VERSION="v1.0.0"
-
-# Check latest remote index tag
-git ls-remote --tags origin | grep "refs/tags/index/" | sort -t/ -k4 -V | tail -1
-INDEX_VERSION="<next version>"
-
-# Stage all role files and index together — single commit
-git add roles/${DOMAIN}/${SPEC}
-git add index/index.cue
-git commit -m "feat(roles): add ${DOMAIN}/${SPEC} role (agent, assistant, teacher)"
-
-# Tag all three modes and the index
-for MODE in agent assistant teacher; do
-  git tag "roles/${DOMAIN}/${SPEC}${MODE}/${VERSION}"
-done
-git tag "index/${INDEX_VERSION}"
-
-# Push everything
-git push origin main
-git push origin --tags
-
-# Publish each mode module
-for MODE in agent assistant teacher; do
-  cd roles/${DOMAIN}/${SPEC}${MODE}
-  cue mod publish ${VERSION}
-  cd -
-done
-
-# Publish index
-cd index && cue mod publish ${INDEX_VERSION}
+start get contexts:start/library/publishing
 ```
 
-Important: The CUE registry has tag immutability. Always check the latest remote tag with `git ls-remote` before tagging to avoid version conflicts.
-
-## Step 9: Close Related GitHub Issue
-
-If a GitHub issue exists for this role, close it:
-
-```bash
-gh issue close <issue-number> --repo start-cli/library --comment "Implemented as roles/${DOMAIN}/${SPEC}{agent,assistant,teacher}@${VERSION}"
-```
+It is the single source for validation, version determination, the mandatory index update, the single module-plus-index commit, the tag pushes, the registry publish, verification, and closing any related GitHub issue. A role publishes all three modes, so apply the per-module steps once per mode and add one index entry per mode, as the workflow describes. This is a create, so each mode starts at v1.0.0.

@@ -46,6 +46,16 @@ Bare names (`claude/interactive`) continue to work as cross-category lookups. CU
 
 Index keys inside the index module are bare names within their category struct (`agents: { "claude/interactive": ... }`). The colon prefix is not encoded in keys.
 
+### Recursive Module References
+
+When a published module's content fetches another library module at runtime with `start get`, the reference must use the fully-qualified colon form (`category:path`, e.g. `start get contexts:start/library/publishing`), not a bare name. Declare every such reference in the module's `uses` field in its CUE definition:
+
+```cue
+uses: ["contexts:start/library/publishing"]
+```
+
+`uses` records runtime fetches only. It is not a CUE import — do not add the referenced module to `cue.mod` `deps`.
+
 ## Module Patterns
 
 UTD (Unified Template Design):
@@ -129,6 +139,31 @@ Index validation (cue vet plus the non-TTY default-resolution contract for the a
 ```bash
 scripts/validate-index
 ```
+
+## Publishing
+
+Publishing a module to the CUE Central Registry follows one canonical workflow. Load it and follow it whenever you create or update a module:
+
+```bash
+start get contexts:start/library/publishing
+```
+
+It owns the full procedure — validation, version determination from the remote, tag-collision preflight, the mandatory index update, the single module-plus-index commit, the explicit tag pushes, the registry publish, and verification.
+
+## Versioning
+
+Versioning follows SemVer, with a minor bump as the default for additive or behavioural content changes. Reserve patch for trivial fixes with no behavioural effect and major for breaking a contract consumers rely on. The publishing workflow above is the canonical source for the detailed criteria and the rule that the index bump rides along with the module change.
+
+## Commit Convention
+
+Use Scoped Commits (https://scopedcommits.com) for every commit, not only publishes:
+
+- Format: `<scope>: <description>`
+- Scope is the module path or area touched
+- Multiple scopes are comma-separated
+- No `feat`/`fix` type prefix — the scope and description carry the meaning
+
+The publish workflow's module-plus-index commit is the canonical multi-scope case (for example `start/module/agent/create, index: ...`).
 
 ## References
 
