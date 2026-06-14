@@ -85,11 +85,4 @@ tasks/<domain>/<name>/
 
 ### start/module/ (authoring modules in the start-cli library)
 
-- [start/module/agent/create](start/module/agent/create/) - Create a new agent module
-- [start/module/agent/update](start/module/agent/update/) - Update an existing agent module
-- [start/module/context/create](start/module/context/create/) - Create a new context module
-- [start/module/context/update](start/module/context/update/) - Update an existing context module
-- [start/module/role/create](start/module/role/create/) - Create a new role module
-- [start/module/role/update](start/module/role/update/) - Update an existing role module
-- [start/module/task/create](start/module/task/create/) - Create a new task module
-- [start/module/task/update](start/module/task/update/) - Update an existing task module
+- [start/module/author](start/module/author/) - Create or update any agent, role, context, or task module

@@ -152,7 +152,7 @@ jira/item/research
 confluence/doc/read
 gitlab/pipeline/review
 cwd/dotagents/role/create
-start/module/context/create
+start/module/author
 ```
 
 ## Reserved Domains

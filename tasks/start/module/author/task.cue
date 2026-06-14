@@ -1,4 +1,4 @@
-package create
+package author
 
 import (
 	"github.com/start-cli/library/schemas@v1"
@@ -6,9 +6,12 @@ import (
 )
 
 task: schemas.#Task & {
-	description: "Create a new task in the library repository"
-	tags: ["library", "task", "create", "cue", "interactive"]
-	uses: ["contexts:start/library/publishing"]
+	description: "Create or update any agent, role, context, or task module in the library repository"
+	tags: ["library", "module", "author", "create", "update", "cue", "interactive"]
+	uses: [
+		"contexts:start/library/naming",
+		"contexts:start/library/publishing",
+	]
 	role: assistantRole.role
 	file: "@module/task.md"
 	prompt: """

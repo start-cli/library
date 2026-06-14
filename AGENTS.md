@@ -163,7 +163,7 @@ Use Scoped Commits (https://scopedcommits.com) for every commit, not only publis
 - Multiple scopes are comma-separated
 - No `feat`/`fix` type prefix — the scope and description carry the meaning
 
-The publish workflow's module-plus-index commit is the canonical multi-scope case (for example `start/module/agent/create, index: ...`).
+The publish workflow's module-plus-index commit is the canonical multi-scope case (for example `start/module/author, index: ...`).
 
 ## References
 

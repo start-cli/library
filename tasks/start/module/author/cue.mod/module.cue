@@ -1,4 +1,4 @@
-module: "github.com/start-cli/library/tasks/start/module/context/create@v1"
+module: "github.com/start-cli/library/tasks/start/module/author@v1"
 language: {
 	version: "v0.16.0"
 }
