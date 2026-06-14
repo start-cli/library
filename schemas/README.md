@@ -46,6 +46,21 @@ Defines the Unified Template Design pattern used by roles, contexts, and tasks.
 
 See: UTD pattern documentation in the start CLI repo for complete documentation.
 
+### #Base
+
+Shared metadata embedded by `#Role`, `#Context`, `#Agent`, and `#Task`. Carries the fields common to every module type.
+
+**Fields:**
+
+- `description` (string, optional) - Human-readable description
+- `tags` ([]string, optional) - Tags for categorization/search
+- `origin` (string, optional) - Source module path for installed copies; empty/undefined means user-defined
+- `uses` ([]string, optional) - Other library modules this module pulls in at runtime via `start get`
+
+**Constraints:**
+
+- Each `uses` entry must be a fully-qualified colon-form address `<category>:<path>` where category is one of `agents`, `roles`, `contexts`, `tasks`; bare names and unknown categories are rejected
+
 ### #Index
 
 Defines the structure for the module discovery index.
