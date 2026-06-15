@@ -119,24 +119,34 @@ After all findings have been processed, re-read the project document with fresh 
 
 This template is a suggestion. Keep details succinct; expand only when the finding genuinely warrants it.
 
+Write every finding for the person directing the agent, not for whoever drafted the document. They may not have the document in their head and will not re-read it to decode the finding. Lead with the impact in plain language, state the decision they must make, and reference sections only as pointers, not as the explanation. Report the conclusion — do not narrate your reasoning or hedge across confidence levels.
+
 ```
 ### Finding n of T: <short title>
 
 Category: <decision | design | gap | risk | dependency>
 Location: <file:line, or section heading if relevant>
 
-Issue
-<what the issue is and why it matters in context>
+What is wrong
+<one or two plain sentences naming the problem, without internal jargon unless unavoidable>
+
+Why it matters
+<the concrete consequence — what is left ambiguous, what could go wrong, or what the owner must resolve>
+
+Decision
+<the single question being put to the reader>
 
 Options
-A. <option>
-B. <option>
+A. <option — what it does and its tradeoff, in plain terms>
+* B. <option>
 C. <option>
 
-Recommendation (B): <which option, with a brief why focused on the principled long-term solution>
+Recommendation (B): <which option, then one plain-language sentence on why, focused on the principled long-term solution>
 ```
 
 Display the Per-item Prompt (see Commands) immediately after presenting the finding.
+
+Mark the recommended option(s) by prefixing the line with `* `; leave the other options unprefixed. Use a plain space, not `&nbsp;`. When the recommendation combines options, mark each one.
 
 For decisions, the Options block lists the alternatives the owner is choosing between, labelled from `A`. For other categories, include an Options block only when alternatives clarify the choice — otherwise omit it and lead with a single Recommendation that `R` accepts. The Recommendation names the option letter or letters it favours, and may combine options (for example `Recommendation (B + C)`).
 

@@ -235,24 +235,34 @@ After all findings have been processed, do a focused re-check on only the code t
 
 This template is a suggestion. Keep details succinct; expand only when the finding genuinely warrants it.
 
+Write every finding for the person directing the agent, not for whoever wrote the code. They may not have the code in their head and will not read it to decode the finding. Lead with the impact in plain language, state the decision they must make, and reference files or symbols only as pointers, not as the explanation. Report the conclusion — do not narrate your reasoning or hedge across confidence levels.
+
 ```
 ### Issue n of T — <ID>: <short title>
 
 Category: <e.g. Security, Correctness>
 Location: <file:line>
 
-Issue
-<what the issue is and why it matters in context>
+What is wrong
+<one or two plain sentences naming the problem, without internal symbols unless unavoidable>
+
+Why it matters
+<the concrete consequence — what breaks, for whom, or what risk it carries>
+
+Decision
+<the single question being put to the reader>
 
 Options
-A. <option>
-B. <option>
+A. <option — what it does and its tradeoff, in plain terms>
+* B. <option>
 C. <option>
 
-Recommendation (B): <which option, with a brief why focused on the principled long-term solution>
+Recommendation (B): <which option, then one plain-language sentence on why, focused on the principled long-term solution>
 ```
 
 Display the Per-item Prompt (see Commands) immediately after presenting the finding.
+
+Mark the recommended option(s) by prefixing the line with `* `; leave the other options unprefixed. Use a plain space, not `&nbsp;`. When the recommendation combines options, mark each one.
 
 Include an Options block only when alternatives clarify the choice — otherwise omit it and lead with a single Recommendation that `R` accepts. When present, label options from `A`. The Recommendation names the option letter or letters it favours, and may combine options (for example `Recommendation (B + C)`).
 
