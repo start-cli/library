@@ -254,15 +254,13 @@ Decision
 
 Options
 A. <option — what it does and its tradeoff, in plain terms>
-* B. <option>
+B. <option>
 C. <option>
 
 Recommendation (B): <which option, then one plain-language sentence on why, focused on the principled long-term solution>
 ```
 
 Display the Per-item Prompt (see Commands) immediately after presenting the finding.
-
-Mark the recommended option(s) by prefixing the line with `* `; leave the other options unprefixed. Use a plain space, not `&nbsp;`. When the recommendation combines options, mark each one.
 
 Include an Options block only when alternatives clarify the choice — otherwise omit it and lead with a single Recommendation that `R` accepts. When present, label options from `A`. The Recommendation names the option letter or letters it favours, and may combine options (for example `Recommendation (B + C)`).
 

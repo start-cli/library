@@ -504,13 +504,13 @@ tasks: {
 	}
 	"review/pre-commit": {
 		module:      "github.com/start-cli/library/tasks/review/pre-commit@v1"
-		version:     "v1.5.0"
+		version:     "v1.6.0"
 		description: "Interactive pre-commit review that finds and fixes issues in git changes"
 		tags: ["review", "pre-commit", "fix", "code-changes", "code-quality"]
 	}
 	"review/multi-agent/orchestrator": {
 		module:      "github.com/start-cli/library/tasks/review/multi-agent/orchestrator@v1"
-		version:     "v1.2.0"
+		version:     "v1.3.0"
 		description: "Orchestrate parallel review agents, consolidate findings, and walk through fixing them"
 		tags: ["review", "orchestration", "multi-agent", "parallel", "fix"]
 	}
@@ -582,7 +582,7 @@ tasks: {
 	}
 	"cwd/project/review": {
 		module:      "github.com/start-cli/library/tasks/cwd/project/review@v1"
-		version:     "v1.5.0"
+		version:     "v1.6.0"
 		description: "Review the current project, surface open issues, and optionally resolve them"
 		tags: ["cwd", "project", "review", "preparation", "analysis", "active", "current", "design", "issues"]
 	}
