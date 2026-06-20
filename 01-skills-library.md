@@ -17,7 +17,8 @@ In scope:
 - One example skill module: `skills/workflows/one-by-one`.
 - The `skills` attribute populated on the claude agent variants.
 - Registration of the new skill in `index/index.cue`.
-- Extension of the index validator to vet skills entries.
+- A `skills` map declaration in `index/index.cue` so the existing index validator vets
+  skills entries.
 - Publishing of the new and changed modules and the index.
 
 Out of scope:
@@ -90,10 +91,17 @@ Out of scope:
    one-by-one remediation workflow (walk a list of findings one at a time, resolve each
    with a principled fix).
 5. The claude agent variants declare `skills: {global: "~/.claude/skills", local: ".claude/skills"}`.
+   Because `#Agent` is a closed definition, the attribute will not validate until each
+   variant's `cue.mod` dependency is bumped to the new `schemas` version and re-tidied. All
+   five variants (interactive, edit, bypass-permissions, non-interactive, unattended) are
+   republished at their next version, and their five `version` fields in `index/index.cue`
+   are bumped to match, each riding in its own module-plus-index commit.
 6. `index/index.cue` registers the skill under the `skills` map keyed `workflows/one-by-one`,
    with module path, version, description, and tags.
-7. `scripts/validate-index` extended to vet the `skills` map against `#IndexEntry`. The
-   non-TTY agent contract is unchanged and does not apply to skills.
+7. `index/index.cue` declares `skills: [string]: schemas.#IndexEntry`, mirroring the
+   existing agents, roles, contexts, and tasks declarations, so `scripts/validate-index`
+   vets the skills map through its existing `cue vet ./...` with no script change. The
+   non-TTY agent contract stays agent-only and does not apply to skills.
 8. All new and changed modules and the index published to the registry and resolvable.
 
 ## Constraints
@@ -111,7 +119,10 @@ Out of scope:
   commit. Versioning follows SemVer; a new module starts at its initial published
   version.
 - The schema change to `#Agent` and `#Index` is additive and optional, so it must not
-  break existing modules or require their republishing beyond the schema module itself.
+  break existing modules. Agents that do not gain a skills attribute (gemini, copilot,
+  aichat) keep validating against their pinned schema version and are not republished. The
+  claude republishes are a deliberate feature change under requirement 5, not a forced
+  consequence of the schema bump.
 
 ## Implementation Plan
 
@@ -123,11 +134,17 @@ Out of scope:
    `cue mod tidy` and `cue vet ./...` in the module.
 4. Validate the SKILL.md frontmatter against the Agent Skills rules (name equals
    directory, character set, description length).
-5. Add the `skills` attribute to each claude agent variant.
-6. Register the skill in `index/index.cue` and extend `scripts/validate-index` to vet the
-   skills map. Run the validator.
-7. Publish using the publishing task. Publish the schema module first since the example
-   skill depends on it, then the skill module and the index.
+5. Bump each claude variant's `cue.mod` dependency to the new `schemas` version, run
+   `cue mod tidy`, then add the `skills` attribute. The dependency bump must precede the
+   attribute or `cue vet` rejects it as a field not allowed.
+6. Add the `skills: [string]: schemas.#IndexEntry` declaration to `index/index.cue` and
+   register the skill entry under it. Run `scripts/validate-index`; no script edit is
+   needed.
+7. Publish using the publishing task. Publish the schema module first, since both the
+   example skill and the re-tidied claude variants depend on the new version. Then publish
+   the five claude variants (each carrying its index `version` bump) and the new skill
+   module (carrying its skills index entry). The index changes for each module ride in that
+   module's commit, per the module-plus-index rule.
 
 ## Implementation Guidance
 
@@ -145,6 +162,7 @@ Out of scope:
 - `scripts/validate-index` passes with the skills map present.
 - The `skills/workflows/one-by-one` module builds (`cue vet ./...`) and its SKILL.md
   satisfies the Agent Skills frontmatter rules with `name` equal to the directory name.
-- Each claude agent variant carries `skills.global` and `skills.local`.
+- Each claude agent variant carries `skills.global` and `skills.local`, depends on the new
+  `schemas` version, and its `index/index.cue` entry carries the bumped `version`.
 - `index/index.cue` contains the `workflows/one-by-one` skills entry.
 - The schema, skill, and index changes are published and resolvable from the registry.
