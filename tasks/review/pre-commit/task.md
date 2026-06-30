@@ -235,7 +235,7 @@ After all findings have been processed, do a focused re-check on only the code t
 
 This template is a suggestion. Keep details succinct; expand only when the finding genuinely warrants it.
 
-Write every finding for the person directing the agent, not for whoever wrote the code. They may not have the code in their head and will not read it to decode the finding. Lead with the impact in plain language, state the decision they must make, and reference files or symbols only as pointers, not as the explanation. Report the conclusion — do not narrate your reasoning or hedge across confidence levels.
+Describe every finding from the perspective of someone who does not have the code in their head. Lead with what they would observe — run this, get that; send this, receive that; call this, it returns that — using the smallest concrete instance that fits the code under review. Show it; do not explain the problem through the code's internal structure. Then add only what is needed to decide: one line of cause, and one line of impact when it is not already obvious. Do not quote requirements, recap intent, or argue the finding is real — the evidence carries it. Keep the finding scannable.
 
 ```
 ### Issue n of T — <ID>: <short title>
@@ -243,21 +243,30 @@ Write every finding for the person directing the agent, not for whoever wrote th
 Category: <e.g. Security, Correctness>
 Location: <file:line>
 
-What is wrong
-<one or two plain sentences naming the problem, without internal symbols unless unavoidable>
+<evidence — the smallest concrete instance of the problem: command → output,
+request → response, call → return, a before/after, or the exact offending line.
+Show it; do not describe it.>
 
-Why it matters
-<the concrete consequence — what breaks, for whom, or what risk it carries>
+**Cause**
 
-Decision
+<one sentence: why it happens, only when the reader needs it to decide>
+
+**Impact**
+
+<one line: the consequence, only when it is not obvious from the evidence>
+
+**Decision**
+
 <the single question being put to the reader>
 
-Options
-A. <option — what it does and its tradeoff, in plain terms>
-B. <option>
-C. <option>
+**Options**
 
-Recommendation (B): <which option, then one plain-language sentence on why, focused on the principled long-term solution>
+A. <option — what it does, its tradeoff>
+B. <option>
+
+**Recommendation (B)**
+
+<option letter, then one clause on why, focused on the principled long-term solution>
 ```
 
 Display the Per-item Prompt (see Commands) immediately after presenting the finding.
@@ -387,9 +396,5 @@ Display verbatim at the end of Phase 1:
 Display verbatim after presenting each finding:
 
 ```
-- A, B, C … — apply the matching option
-- (R)ecommendation — apply exactly what was recommended
-- (N)ext — skip this finding and move on
-- (P)roject — spin this finding out as a standalone file
-- (S)ave — write the review so far to .start/reviews/ and stop
+(R)ecommended  (N)ext  (P)roject  (S)ave
 ```
